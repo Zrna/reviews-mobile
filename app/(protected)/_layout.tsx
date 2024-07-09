@@ -30,7 +30,6 @@ const ProtectedLayout = () => {
           backgroundColor: "black",
           borderTopWidth: 0.2,
           borderTopColor: "#A1A1A1",
-          height: 55,
         },
       }}
     >
