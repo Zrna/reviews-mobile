@@ -1,14 +1,15 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const App = () => {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-3xl font-pop-black">Reviews</Text>
-      <Link href="/profile" className="text-blue-400">
-        Go to Profile
+    <SafeAreaView className="h-full justify-center items-center bg-black">
+      <Text className="text-3xl font-pop-black text-white">Reviews</Text>
+      <Link href="/home" className="text-blue-400">
+        Go to Home
       </Link>
-    </View>
+    </SafeAreaView>
   );
 };
 

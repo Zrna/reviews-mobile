@@ -1,5 +1,6 @@
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -33,10 +34,14 @@ const RootLayout = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="profile" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <Stack>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+      </Stack>
+      <StatusBar backgroundColor="#000" style="light" />
+    </>
   );
 };
 
