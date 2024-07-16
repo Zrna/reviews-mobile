@@ -1,12 +1,19 @@
-import { Link, router } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import logo from "@/assets/images/logo.png";
 import bg from "@/assets/images/sign-in-background.png";
 import CustomButton from "@/components/CustomButton";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const App = () => {
+  const { authState } = useAuthContext();
+
+  if (authState.isLoggedIn) {
+    return <Redirect href="/home" />;
+  }
+
   return (
     <SafeAreaView className="h-full bg-black">
       <ScrollView contentContainerStyle={{ height: "100%" }}>

@@ -7,25 +7,22 @@ import { z } from "zod";
 
 import logo from "@/assets/images/logo.png";
 import { CustomButton, CustomInput } from "@/components";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { LoginProps } from "@/interfaces/auth";
 
 const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password must contain at least 6 characters"),
 });
 
-type LoginProps = z.infer<typeof LoginSchema>;
-
 const Login = () => {
+  const { onLogin } = useAuthContext();
+
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginProps>({ resolver: zodResolver(LoginSchema) });
-
-  const handleLogin = async (data: any) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
-  };
 
   return (
     <SafeAreaView className="h-full bg-black">
@@ -41,6 +38,7 @@ const Login = () => {
               keyboardType="email-address"
               textContentType="emailAddress"
               autoComplete="email"
+              autoCapitalize="none"
             />
             <CustomInput
               control={control}
@@ -52,7 +50,7 @@ const Login = () => {
             />
             <CustomButton
               text="Log in"
-              onPress={handleSubmit(handleLogin)}
+              onPress={handleSubmit(async (data) => onLogin?.(data.email, data.password))}
               isFullWidth
               isDisabled={isSubmitting}
               isLoading={isSubmitting}
