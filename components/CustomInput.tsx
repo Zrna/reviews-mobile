@@ -44,6 +44,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                   secureTextEntry={secureTextEntry && isValueHidden}
                   placeholderTextColor="#D0D0D0"
                   className={`text-white flex-1 text-base ${Icon ? "ml-2" : ""}`}
+                  hitSlop={{ top: 20, bottom: 20 }}
                   {...props}
                 />
                 {secureTextEntry && (
