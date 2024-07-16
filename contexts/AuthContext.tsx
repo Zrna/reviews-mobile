@@ -8,6 +8,7 @@ import { Alert } from "react-native";
 
 import { login as loginRequest, logout as logoutRequest } from "@/apis/auth";
 import { sleep } from "@/utils/async";
+import { getErrorMessage } from "@/utils/error";
 
 export const TOKEN_KEY = "accessToken";
 
@@ -58,8 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       router.replace("/home");
       return res;
     } catch (error) {
-      console.log("Login Error", error);
-      Alert.alert("", (error as any).message);
+      Alert.alert("", getErrorMessage(error));
     }
   };
 
@@ -79,8 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       );
     } catch (error) {
-      console.log("Logout Error", error);
-      throw new Error("Logout Error");
+      Alert.alert("", getErrorMessage(error));
     }
   };
 
