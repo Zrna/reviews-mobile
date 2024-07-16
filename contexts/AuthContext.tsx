@@ -1,14 +1,15 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-import { login as loginRequest } from "@/apis/auth";
+import { login as loginRequest, logout as logoutRequest } from "@/apis/auth";
 import { sleep } from "@/utils/async";
 
-const TOKEN_KEY = "accessToken";
+export const TOKEN_KEY = "accessToken";
 
 interface AuthContextProps {
   authState: {
@@ -29,6 +30,7 @@ const AuthContext = createContext<AuthContextProps>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigation = useNavigation();
+  const queryClient = useQueryClient();
 
   const [authState, setAuthState] = useState<AuthContextProps["authState"]>({
     accessToken: undefined,
@@ -62,16 +64,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
-    axios.defaults.headers.common["Authorization"] = undefined;
-    setAuthState({ accessToken: undefined, isLoggedIn: false });
+    try {
+      await logoutRequest();
+      await SecureStore.deleteItemAsync(TOKEN_KEY);
+      queryClient.removeQueries();
+      queryClient.clear();
+      axios.defaults.headers.common["Authorization"] = undefined;
+      setAuthState({ accessToken: undefined, isLoggedIn: false });
 
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "index" }],
-      }),
-    );
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "index" }],
+        }),
+      );
+    } catch (error) {
+      console.log("Logout Error", error);
+      throw new Error("Logout Error");
+    }
   };
 
   useEffect(() => {
@@ -85,12 +95,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         router.replace("/home");
       } else {
         setAuthState({ accessToken: undefined, isLoggedIn: false });
+        queryClient.removeQueries();
+        queryClient.clear();
 
         router.replace("/");
       }
     };
 
     loadToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
