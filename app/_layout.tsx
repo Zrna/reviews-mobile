@@ -1,7 +1,8 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 
@@ -9,6 +10,16 @@ import { AuthNavigator } from "./AuthNavigator";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 1000 * 60 * 60 * 24 * 7, // 1 week in milliseconds
+    },
+  },
+});
 
 const RootLayout = () => {
   const [fontsLoaded, fontsError] = useFonts({
@@ -38,10 +49,12 @@ const RootLayout = () => {
   }
 
   return (
-    <AuthProvider>
-      <AuthNavigator />
-      <StatusBar backgroundColor="#000" style="light" />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AuthNavigator />
+        <StatusBar backgroundColor="#000" style="light" />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 
