@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Image, ScrollView, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 
@@ -56,6 +57,9 @@ const Login = () => {
               isLoading={isSubmitting}
               class="mt-4"
             />
+            <Link href="/register" className="text-dimmed mt-6 self-center">
+              Don't have an account? <Text className="text-blue-400">Sign up</Text>
+            </Link>
           </View>
         </View>
       </ScrollView>

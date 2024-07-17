@@ -6,7 +6,8 @@ import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-import { login as loginRequest, logout as logoutRequest } from "@/apis/auth";
+import { login as loginRequest, logout as logoutRequest, register as registerRequest } from "@/apis/auth";
+import { RegisterProps } from "@/interfaces/auth";
 import { sleep } from "@/utils/async";
 import { getErrorMessage } from "@/utils/error";
 
@@ -18,7 +19,7 @@ interface AuthContextProps {
     isLoggedIn: boolean;
   };
   onLogin?: (email: string, password: string) => void;
-  onRegister?: (email: string, password: string, firstName: string, lastName: string) => void;
+  onRegister?: (data: RegisterProps) => void;
   onLogout?: () => void;
 }
 
@@ -38,13 +39,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     isLoggedIn: false,
   });
 
-  const register = (email: string, password: string, firstName: string, lastName: string) => {
-    console.log("email", email);
-    console.log("password", password);
-    console.log("firstName", firstName);
-    console.log("lastName", lastName);
+  const register = async (data: RegisterProps) => {
+    await sleep(2000);
+    try {
+      const res = await registerRequest(data);
 
-    return "register called";
+      setAuthState({ accessToken: res.accessToken, isLoggedIn: true });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${res.accessToken}`;
+      await SecureStore.setItemAsync(TOKEN_KEY, res.accessToken);
+
+      router.replace("/home");
+      return res;
+    } catch (error) {
+      Alert.alert("", getErrorMessage(error));
+    }
   };
 
   const login = async (email: string, password: string) => {
