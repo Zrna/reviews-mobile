@@ -51,7 +51,7 @@ const Login = () => {
             />
             <CustomButton
               text="Log in"
-              onPress={handleSubmit(async (data) => onLogin?.(data.email, data.password))}
+              onPress={handleSubmit(async (data) => onLogin?.(data))}
               isFullWidth
               isDisabled={isSubmitting}
               isLoading={isSubmitting}

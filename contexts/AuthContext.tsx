@@ -7,7 +7,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 import { login as loginRequest, logout as logoutRequest, register as registerRequest } from "@/apis/auth";
-import { RegisterProps } from "@/interfaces/auth";
+import { LoginProps, RegisterProps } from "@/interfaces/auth";
 import { sleep } from "@/utils/async";
 import { getErrorMessage } from "@/utils/error";
 
@@ -18,7 +18,7 @@ interface AuthContextProps {
     accessToken: string | undefined;
     isLoggedIn: boolean;
   };
-  onLogin?: (email: string, password: string) => void;
+  onLogin?: (data: LoginProps) => void;
   onRegister?: (data: RegisterProps) => void;
   onLogout?: () => void;
 }
@@ -55,10 +55,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (data: LoginProps) => {
     await sleep(2000);
     try {
-      const res = await loginRequest({ email, password });
+      const res = await loginRequest(data);
 
       setAuthState({ accessToken: res.accessToken, isLoggedIn: true });
       axios.defaults.headers.common["Authorization"] = `Bearer ${res.accessToken}`;
