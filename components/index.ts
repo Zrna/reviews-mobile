@@ -1,3 +1,3 @@
 export { default as CustomButton } from "./CustomButton";
 export { default as CustomInput } from "./CustomInput";
-export { default as FlatListItemsSeparator } from "./FlatListItemsSeparator";
+export { default as FlatListWrapper } from "./FlatListWrapper";
