@@ -10,7 +10,7 @@ interface FlatListWrapperProps {
 const FlatListWrapper: React.FC<FlatListWrapperProps> = ({ class: customClass, children, title }) => {
   return (
     <View className={`space-y-2 ${customClass}`}>
-      <Text className="text-white font-pop-bold text-2xl">{title}</Text>
+      <Text className="text-white font-pop-bold text-xl">{title}</Text>
       {children}
     </View>
   );
