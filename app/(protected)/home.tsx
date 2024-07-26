@@ -4,11 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { FlatListWrapper } from "@/components";
 import { LatestReviewCard, Navbar, ReviewCard } from "@/components/screens/home";
-import { useReviews } from "@/hooks/api/reviews";
+import { useLatestReviews, useReviews } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
 
 const Home = () => {
-  const { data: reviews, refetch: refetchReviews, isRefetching, isLoading } = useReviews();
+  const { data: latestReviews, refetch: refetchLatestReviews, isLoading: isLoadingLatestReviews } = useLatestReviews();
+  const { data: reviews, refetch: refetchReviews, isRefetching, isLoading: isLoadingReviews } = useReviews();
 
   const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
 
@@ -16,6 +17,11 @@ const Home = () => {
     if (viewableItems.length > 0) {
       setActiveLatestReviewCard(viewableItems[0].item);
     }
+  };
+
+  const handleRefresh = async () => {
+    await refetchLatestReviews();
+    await refetchReviews();
   };
 
   useEffect(() => {
@@ -26,7 +32,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="h-full bg-black">
-      {isLoading ? (
+      {isLoadingLatestReviews || isLoadingReviews ? (
         <Text className="text-white">Loading...</Text>
       ) : (
         <ScrollView
@@ -35,7 +41,7 @@ const Home = () => {
           refreshControl={
             <RefreshControl
               refreshing={isRefetching}
-              onRefresh={refetchReviews}
+              onRefresh={handleRefresh}
               tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
               colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
             />
@@ -44,7 +50,7 @@ const Home = () => {
           <Navbar />
           <FlatListWrapper title="Your Latest" class="mt-5">
             <FlatList
-              data={reviews?.data.slice(0, 4)}
+              data={latestReviews?.data}
               keyExtractor={(review) => review.id.toString()}
               renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
               ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}

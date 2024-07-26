@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getReviews } from "@/apis/reviews";
+import { getLatestReviews, getReviews } from "@/apis/reviews";
 
 export function useReviews() {
   return useQuery({
@@ -8,3 +8,10 @@ export function useReviews() {
     queryFn: getReviews,
   });
 }
+
+export const useLatestReviews = () => {
+  return useQuery({
+    queryKey: ["latestReviews"],
+    queryFn: getLatestReviews,
+  });
+};
