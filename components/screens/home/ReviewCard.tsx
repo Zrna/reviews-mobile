@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import React from "react";
 import { Image, Text, View } from "react-native";
 
@@ -11,20 +12,22 @@ interface ReviewCardProps {
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
   const imageSource = review.img ? { uri: `data:image/jpeg;base64,${review.img}` } : defaultPoster;
-  const imgSize = isBig ? "w-[200px] h-[300px]" : "w-[110px] h-[160px]";
+  const cardSize = isBig ? "w-[200px] h-[300px]" : "w-[110px] h-[160px]";
 
   return (
-    <View>
-      <Image source={imageSource} className={`${imgSize} rounded-md relative`} resizeMode="cover" />
-      <Text
-        className="text-white absolute bottom-0 w-full p-1.5"
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        }}
-      >
-        {review.name}
-      </Text>
-    </View>
+    <Link href={`/review/${review.id}`}>
+      <View className={`${cardSize} rounded-md`}>
+        <Image source={imageSource} className="w-full h-full rounded-md" resizeMode="cover" />
+        <Text
+          className="text-white absolute bottom-0 w-full p-1.5 rounded-b-md"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          {review.name}
+        </Text>
+      </View>
+    </Link>
   );
 };
 

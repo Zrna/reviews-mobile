@@ -21,6 +21,7 @@ const ProtectedLayout = () => {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveBackgroundColor: "black",
         tabBarInactiveBackgroundColor: "black",
         tabBarInactiveTintColor: "#d9d9d9",
