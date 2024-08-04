@@ -3,7 +3,7 @@ import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { FlatListWrapper } from "@/components";
-import { LatestReviewCard, Navbar, ReviewCard } from "@/components/screens/home";
+import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviews } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
 
@@ -30,51 +30,55 @@ const Home = () => {
     }
   }, [reviews]);
 
+  if (isLoadingLatestReviews || isLoadingReviews) {
+    return (
+      <SafeAreaView className="h-full bg-black">
+        <Skeleton />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className="h-full bg-black">
-      {isLoadingLatestReviews || isLoadingReviews ? (
-        <Text className="text-white">Loading...</Text>
-      ) : (
-        <ScrollView
-          className="px-3 space-y-10"
-          stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefetching}
-              onRefresh={handleRefresh}
-              tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
-              colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
-            />
-          }
-        >
-          <Navbar />
-          <FlatListWrapper title="Your Latest" class="mt-5">
-            <FlatList
-              data={latestReviews?.data}
-              keyExtractor={(review) => review.id.toString()}
-              renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
-              ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-              ItemSeparatorComponent={() => <View className="w-2" />}
-              showsHorizontalScrollIndicator={false}
-              onViewableItemsChanged={viewableItemsChanged}
-              horizontal
-              viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-              contentOffset={{ x: 0, y: 0 }}
-            />
-          </FlatListWrapper>
-          <FlatListWrapper title="Your Reviews" class="mt-5">
-            <FlatList
-              data={reviews?.data}
-              keyExtractor={(review) => review.id.toString()}
-              renderItem={({ item }) => <ReviewCard review={item} />}
-              ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-              ItemSeparatorComponent={() => <View className="w-2" />}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-            />
-          </FlatListWrapper>
-        </ScrollView>
-      )}
+      <ScrollView
+        className="px-3 space-y-10"
+        stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={handleRefresh}
+            tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
+            colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
+          />
+        }
+      >
+        <Navbar />
+        <FlatListWrapper title="Your Latest" class="mt-5">
+          <FlatList
+            data={latestReviews?.data}
+            keyExtractor={(review) => review.id.toString()}
+            renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
+            ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
+            ItemSeparatorComponent={() => <View className="w-2" />}
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={viewableItemsChanged}
+            horizontal
+            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+            contentOffset={{ x: 0, y: 0 }}
+          />
+        </FlatListWrapper>
+        <FlatListWrapper title="Your Reviews" class="mt-5">
+          <FlatList
+            data={reviews?.data}
+            keyExtractor={(review) => review.id.toString()}
+            renderItem={({ item }) => <ReviewCard review={item} />}
+            ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
+            ItemSeparatorComponent={() => <View className="w-2" />}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+          />
+        </FlatListWrapper>
+      </ScrollView>
     </SafeAreaView>
   );
 };
