@@ -15,7 +15,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
   const cardSize = isBig ? "w-[200px] h-[300px]" : "w-[110px] h-[160px]";
 
   return (
-    <Link href={`/review/${review.id}`}>
+    <Link href={`/reviews/${review.id}`}>
       <View className={`${cardSize} rounded-md`}>
         <Image source={imageSource} className="w-full h-full rounded-md" resizeMode="cover" />
         <Text

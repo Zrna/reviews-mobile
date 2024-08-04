@@ -11,7 +11,7 @@ export const AuthNavigator = () => {
       <Stack>
         <Stack.Screen name="(protected)/(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
-          name="(protected)/review/[id]"
+          name="(protected)/reviews/[id]"
           options={{
             title: "",
             headerStyle: { backgroundColor: "black" },
