@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import React from "react";
 import { Image, Text, View } from "react-native";
@@ -18,14 +19,12 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
     <Link href={`/reviews/${review.id}`}>
       <View className={`${cardSize} rounded-md`}>
         <Image source={imageSource} className="w-full h-full rounded-md" resizeMode="cover" />
-        <Text
-          className="text-white absolute bottom-0 w-full p-1.5 rounded-b-md"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          className="absolute bottom-0 w-full p-2 rounded-b-md"
         >
-          {review.name}
-        </Text>
+          <Text className="text-white font-pop-regular">{review.name}</Text>
+        </LinearGradient>
       </View>
     </Link>
   );
