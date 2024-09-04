@@ -13,6 +13,7 @@ module.exports = {
         dimmed: "#D0D0D0",
         warning: "#C09423",
         error: "#C02323",
+        orange: "#FFA500",
         green: {
           default: "#23C06B",
           50: "#e9f9f0",
