@@ -1,23 +1,43 @@
 import React from "react";
-import { Text } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
+import { LogOut } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { CustomButton } from "@/components";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAccount } from "@/hooks/api/account";
+import { getUserInitials } from "@/utils/user";
 
 const Profile = () => {
   const { onLogout } = useAuthContext();
-  const { data: account } = useAccount();
+  const { data: account, isLoading: isLoadingUser } = useAccount();
+
+  if (!account || isLoadingUser) {
+    return (
+      <SafeAreaView className="h-full justify-center bg-black">
+        <ActivityIndicator color="white" />
+      </SafeAreaView>
+    );
+  }
+
+  const { email, firstName, lastName } = account;
+  const userInitials = getUserInitials(firstName, lastName);
 
   return (
-    <SafeAreaView className="h-full justify-center items-center bg-black space-y-5">
-      <Text className="text-white">Profile</Text>
-      <Text className="text-white text-xl">
-        {account?.firstName} {account?.lastName}
-      </Text>
-      <Text className="text-white text-xl">{account?.email}</Text>
-      <CustomButton text="Logout" onPress={onLogout} isFullWidth class="mt-5" />
+    <SafeAreaView className="h-full bg-black">
+      <View className="pt-4 px-3 items-end">
+        <LogOut stroke="rgba(255,255,255,0.8)" width={28} height={28} onPress={onLogout} />
+      </View>
+      <View className="h-full justify-center items-center space-y-6">
+        <View className="bg-green-default rounded-lg p-0.5">
+          <View className="w-16 h-16 border-2 border-black rounded-lg justify-center items-center bg-black">
+            <Text className="text-2xl text-white">{userInitials}</Text>
+          </View>
+        </View>
+        <Text className="text-white text-xl">
+          {firstName} {lastName}
+        </Text>
+        <Text className="text-white text-xl">{email}</Text>
+      </View>
     </SafeAreaView>
   );
 };
