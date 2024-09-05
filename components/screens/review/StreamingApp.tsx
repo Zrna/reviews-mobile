@@ -7,26 +7,22 @@ import hboMaxLogo from "@/assets/images/hbo-max.png";
 import netflixLogo from "@/assets/images/netflix.png";
 import { addUrlProtocol } from "@/utils/url";
 
-const streamingAppsMap: { [key: PropertyKey]: { link: string; img: any; showBorder: boolean } } = {
+const streamingAppsMap: { [key: string]: { link: string; img: any } } = {
   netflix: {
     link: "https://www.netflix.com/",
     img: netflixLogo,
-    showBorder: false,
   },
   hbomax: {
     link: "https://play.hbomax.com/",
     img: hboMaxLogo,
-    showBorder: false,
   },
   disneyplus: {
     link: "https://www.disneyplus.com",
     img: disneyPlusLogo,
-    showBorder: true,
   },
   appleTv: {
     link: "https://tv.apple.com/",
     img: appleTvLogo,
-    showBorder: true,
   },
 };
 
@@ -47,11 +43,8 @@ const StreamingApp: React.FC<StreamingAppProps> = ({ name, link, showName = fals
     const isIOS = Platform.OS === "ios";
 
     return (
-      <Link href={link ? addUrlProtocol(link) : app.link} className={`h-[80%] ${isIOS ? "mt-[15%]" : ""}`}>
-        <Image
-          source={app.img}
-          className={`w-12 h-12 ${app.showBorder ? "border border-gray-500 rounded-full p-2" : ""}`}
-        />
+      <Link href={link ? addUrlProtocol(link) : app.link} className={`h-[70px] ${isIOS ? "mt-[15%]" : ""} text-center`}>
+        <Image source={app.img} className="w-[100px] h-12" resizeMode="contain" />
       </Link>
     );
   }
