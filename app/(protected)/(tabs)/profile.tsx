@@ -15,6 +15,9 @@ const Profile = () => {
     return (
       <SafeAreaView className="h-full justify-center bg-black">
         <ActivityIndicator color="white" />
+
+        {/* Use this box to logout when the app is stuck */}
+        <Text className="w-10 h-10 self-center" onPress={onLogout} />
       </SafeAreaView>
     );
   }
