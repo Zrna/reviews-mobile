@@ -1,10 +1,10 @@
 import { Link } from "expo-router";
 import { Image, Platform, Text } from "react-native";
 
-import appleTvLogo from "@/assets/images/apple-tv.png";
-import disneyPlusLogo from "@/assets/images/disneyplus.png";
-import hboMaxLogo from "@/assets/images/hbo-max.png";
-import netflixLogo from "@/assets/images/netflix.png";
+import appleTvLogo from "@/assets/images/platforms/apple-tv.png";
+import disneyPlusLogo from "@/assets/images/platforms/disneyplus.png";
+import hboMaxLogo from "@/assets/images/platforms/hbo-max.png";
+import netflixLogo from "@/assets/images/platforms/netflix.png";
 import { addUrlProtocol } from "@/utils/url";
 
 const streamingAppsMap: { [key: string]: { link: string; img: any } } = {
