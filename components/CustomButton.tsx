@@ -6,10 +6,19 @@ interface CustomButtonProps {
   isDisabled?: boolean;
   isFullWidth?: boolean;
   class?: string;
+  textClass?: string;
   onPress?: () => void;
 }
 
-const CustomButton = ({ class: customClass, text, isLoading, isDisabled, isFullWidth, onPress }: CustomButtonProps) => {
+const CustomButton = ({
+  class: customClass,
+  textClass,
+  text,
+  isLoading,
+  isDisabled,
+  isFullWidth,
+  onPress,
+}: CustomButtonProps) => {
   return (
     <TouchableOpacity
       disabled={isDisabled || isLoading}
@@ -20,7 +29,7 @@ const CustomButton = ({ class: customClass, text, isLoading, isDisabled, isFullW
       {isLoading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <Text className="text-black font-psemibold text-lg">{text}</Text>
+        <Text className={`text-black font-psemibold text-lg ${textClass}`}>{text}</Text>
       )}
     </TouchableOpacity>
   );
