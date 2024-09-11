@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import defaultPoster from "@/assets/images/default-poster.png";
+import { CustomButton } from "@/components";
 import { Indicator, Navbar, StreamingApp } from "@/components/screens/review";
 import { useReviewById } from "@/hooks/api/reviews";
 import { reactionsMap } from "@/utils/review";
@@ -28,7 +29,7 @@ const ReviewScreen = () => {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="h-full bg-black">
+      <SafeAreaView className="h-full bg-black justify-center">
         <ActivityIndicator color="white" />
       </SafeAreaView>
     );
@@ -36,8 +37,15 @@ const ReviewScreen = () => {
 
   if (!review) {
     return (
-      <SafeAreaView className="h-full bg-black">
+      <SafeAreaView className="h-full bg-black justify-center items-center p-10">
         <Text className="text-white text-xl">Review not found</Text>
+        <CustomButton
+          text="Go to All Reviews"
+          isFullWidth
+          class="mt-10 bg-black border border-primary"
+          textClass="text-dimmed text-lg"
+          onPress={() => router.push("/home")}
+        />
       </SafeAreaView>
     );
   }
