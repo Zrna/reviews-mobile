@@ -5,6 +5,8 @@ import appleTvLogo from "@/assets/images/platforms/apple-tv.png";
 import disneyPlusLogo from "@/assets/images/platforms/disneyplus.png";
 import hboMaxLogo from "@/assets/images/platforms/hbo-max.png";
 import netflixLogo from "@/assets/images/platforms/netflix.png";
+import spotifyLogo from "@/assets/images/platforms/spotify.png";
+import youtubeLogo from "@/assets/images/platforms/youtube.png";
 import { addUrlProtocol } from "@/utils/url";
 
 const streamingAppsMap: { [key: string]: { link: string; img: any } } = {
@@ -23,6 +25,14 @@ const streamingAppsMap: { [key: string]: { link: string; img: any } } = {
   appleTv: {
     link: "https://tv.apple.com/",
     img: appleTvLogo,
+  },
+  youtube: {
+    link: "https://www.youtube.com/",
+    img: youtubeLogo,
+  },
+  spotify: {
+    link: "https://www.spotify.com/",
+    img: spotifyLogo,
   },
 };
 
