@@ -1,6 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Alert } from "react-native";
 
-import { getLatestReviews, getReviewById, getReviews } from "@/apis/reviews";
+import { createReview, getLatestReviews, getReviewById, getReviews } from "@/apis/reviews";
+import { CreateReview } from "@/interfaces/reviews";
+import { getErrorMessage } from "@/utils/error";
 
 export function useReviews() {
   return useQuery({
@@ -21,5 +24,23 @@ export const useReviewById = (id: string) => {
     queryKey: ["reviews", id],
     queryFn: () => getReviewById(id),
     enabled: !!id,
+  });
+};
+
+export const useCreateReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CreateReview) => {
+      return await createReview(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
+    },
+    onError: (error) => {
+      Alert.alert("", getErrorMessage(error));
+      throw error;
+    },
   });
 };

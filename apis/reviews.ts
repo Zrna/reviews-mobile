@@ -1,4 +1,4 @@
-import { Review, Reviews } from "@/interfaces/reviews";
+import { CreateReview, Review, Reviews } from "@/interfaces/reviews";
 import { backend } from "@/services/backend";
 
 export const getReviews = async (): Promise<Reviews> => {
@@ -11,4 +11,8 @@ export const getLatestReviews = async (): Promise<Reviews> => {
 
 export const getReviewById = async (id: string): Promise<Review> => {
   return await backend.get(`/api/reviews/${id}`);
+};
+
+export const createReview = async (data: CreateReview): Promise<Review> => {
+  return await backend.post("/api/reviews", data);
 };

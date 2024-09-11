@@ -15,3 +15,11 @@ export interface Reviews {
   data: Review[];
   totalRecords: number;
 }
+
+export interface CreateReview {
+  name: string;
+  review: string;
+  rating?: number | null;
+  url?: string | null;
+  watchAgain: boolean;
+}
