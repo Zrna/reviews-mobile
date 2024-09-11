@@ -4,6 +4,7 @@ import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-n
 import { Eye, EyeOff } from "react-native-feather";
 
 interface CustomInputProps extends TextInputProps {
+  componentType?: "input" | "textarea";
   name: string;
   label?: string;
   control: Control<any>;
@@ -13,6 +14,7 @@ interface CustomInputProps extends TextInputProps {
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
+  componentType = "input",
   control,
   name,
   rules = {},
@@ -22,6 +24,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   ...props
 }) => {
   const [isValueHidden, setShowIsValueHidden] = useState(secureTextEntry);
+  const isTextArea = componentType === "textarea";
 
   return (
     <Controller
@@ -34,7 +37,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             <View className="space-y-1">
               {label && <Text className="text-dimmed font-pop-medium">{label}</Text>}
               <View
-                className={`flex-row justify-between bg-dark text-white items-center px-3 rounded-xl h-16 border border-light-dark focus:border-primary ${error ? "border border-red-500" : ""}`}
+                className={`flex-row justify-between bg-dark text-white items-center px-3 rounded-xl ${isTextArea ? "h-[200px]" : "h-16"} border border-light-dark focus:border-primary ${error ? "border border-red-500" : ""}`}
               >
                 {Icon && React.cloneElement(Icon, { width: 24, height: 24, color: error ? "#ef4444" : "#D0D0D0" })}
                 <TextInput
@@ -45,6 +48,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
                   placeholderTextColor="#D0D0D0"
                   className={`text-white flex-1 text-base ${Icon ? "ml-2" : ""}`}
                   hitSlop={{ top: 20, bottom: 20 }}
+                  multiline={isTextArea}
+                  numberOfLines={isTextArea ? 9 : 1}
+                  textAlignVertical={isTextArea ? "top" : "center"}
                   {...props}
                 />
                 {secureTextEntry && (
