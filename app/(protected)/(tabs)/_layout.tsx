@@ -32,6 +32,7 @@ const ProtectedLayout = () => {
           borderTopWidth: 0.2,
           borderTopColor: "#A1A1A1",
         },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen
