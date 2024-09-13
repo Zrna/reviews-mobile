@@ -27,7 +27,7 @@ const Login = () => {
 
   return (
     <SafeAreaView className="h-full bg-black">
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets>
         <View className="items-center">
           <Image source={logo} className="w-[115px] h-[35px] mt-4" resizeMode="contain" />
           <View className="w-full min-h-[85vh] justify-center px-4">

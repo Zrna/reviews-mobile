@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 import { z } from "zod";
@@ -40,36 +40,42 @@ const Create = () => {
   }, [isSuccess]);
 
   return (
-    <SafeAreaView className="h-full bg-black">
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={reset}
-            tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
-            colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
-          />
-        }
-      >
-        <View className="w-full min-h-[85vh] p-4 pt-8 space-y-8">
-          <Text className="text-white font-pop-bold text-xl">Create a review</Text>
-          <View>
-            <CustomInput control={control} name="name" label="Movie/TV show name" />
-            <CustomInput control={control} name="url" label="Link to watch or platform name" />
-            <Rating control={control} />
-            <WatchAgain control={control} />
-            <CustomInput control={control} name="review" label="Your Review" componentType="textarea" />
-            <CustomButton
-              onPress={handleSubmit(async (data) => await createReview(data))}
-              isFullWidth
-              isDisabled={isSubmitting}
-              isLoading={isSubmitting}
-              text="Create"
+    <KeyboardAvoidingView
+      behavior={Platform.select({ android: undefined, ios: "padding" })}
+      keyboardVerticalOffset={-200}
+    >
+      <SafeAreaView className="h-full bg-black">
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={reset}
+              tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
+              colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
             />
+          }
+          automaticallyAdjustKeyboardInsets
+        >
+          <View className="w-full min-h-[85vh] p-4 pt-8 space-y-8">
+            <Text className="text-white font-pop-bold text-xl">Create a review</Text>
+            <View>
+              <CustomInput control={control} name="name" label="Movie/TV show name" />
+              <CustomInput control={control} name="url" label="Link to watch or platform name" />
+              <Rating control={control} />
+              <WatchAgain control={control} />
+              <CustomInput control={control} name="review" label="Your Review" componentType="textarea" />
+              <CustomButton
+                onPress={handleSubmit(async (data) => await createReview(data))}
+                isFullWidth
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+                text="Create"
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
