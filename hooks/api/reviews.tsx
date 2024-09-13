@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { Alert } from "react-native";
+import { Toast } from "toastify-react-native";
 
-import { createReview, getLatestReviews, getReviewById, getReviews } from "@/apis/reviews";
+import { createReview, deleteReviewById, getLatestReviews, getReviewById, getReviews } from "@/apis/reviews";
 import { CreateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
@@ -37,6 +39,26 @@ export const useCreateReview = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
+    },
+    onError: (error) => {
+      Alert.alert("", getErrorMessage(error));
+      throw error;
+    },
+  });
+};
+
+export const useDeleteReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return await deleteReviewById(id);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
+      router.push("/home");
+      Toast.success("Review deleted");
     },
     onError: (error) => {
       Alert.alert("", getErrorMessage(error));

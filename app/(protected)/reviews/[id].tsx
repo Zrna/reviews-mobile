@@ -1,9 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   ImageBackground,
   Platform,
@@ -17,13 +18,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import defaultPoster from "@/assets/images/default-poster.png";
 import { CustomButton } from "@/components";
 import { Indicator, Navbar, StreamingApp } from "@/components/screens/review";
-import { useReviewById } from "@/hooks/api/reviews";
+import { useDeleteReview, useReviewById } from "@/hooks/api/reviews";
 import { reactionsMap } from "@/utils/review";
 import { getUrlDomain } from "@/utils/url";
 
 const ReviewScreen = () => {
   const { id } = useLocalSearchParams();
   const { data: review, isLoading, refetch: refetchReview, isRefetching } = useReviewById(id as string);
+  const { mutateAsync: deleteReview, isPending: isDeleting } = useDeleteReview();
+
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // handle if user is not authorized to view the review
 
@@ -53,6 +57,16 @@ const ReviewScreen = () => {
   const imageSource = review.img ? { uri: `data:image/jpeg;base64,${review.img}` } : defaultPoster;
   const reviewUrlDomain = review.url && getUrlDomain(review.url);
 
+  const handleDelete = () =>
+    Alert.alert("Delete Review", `Are you sure you want to delete the review for ${review.name}?`, [
+      { text: "Cancel", style: "cancel", onPress: () => undefined },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => (deleteReview(review.id.toString()), setIsEditMode(false)),
+      },
+    ]);
+
   const scrollY = new Animated.Value(0);
   const backgroundColor = scrollY.interpolate({
     inputRange: [0, 50],
@@ -65,7 +79,14 @@ const ReviewScreen = () => {
   return (
     <Animated.View className="flex flex-1">
       <StatusBar backgroundColor="transparent" style="auto" />
-      <Navbar bgColor={backgroundColor} />
+      <Navbar
+        bgColor={backgroundColor}
+        isEditMode={isEditMode}
+        onEdit={() => setIsEditMode(true)}
+        onSave={() => undefined}
+        onCancel={() => setIsEditMode(false)}
+        onDelete={handleDelete}
+      />
       <ScrollView
         className="h-full bg-black relative"
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
@@ -119,6 +140,11 @@ const ReviewScreen = () => {
           <Text className="text-white text-xl">{review.review}</Text>
         </View>
       </ScrollView>
+      {isDeleting && (
+        <View className="absolute w-full h-full bg-black opacity-80 justify-center z-50">
+          <ActivityIndicator color="#23C06B" size="large" />
+        </View>
+      )}
     </Animated.View>
   );
 };

@@ -16,3 +16,7 @@ export const getReviewById = async (id: string): Promise<Review> => {
 export const createReview = async (data: CreateReview): Promise<Review> => {
   return await backend.post("/api/reviews", data);
 };
+
+export const deleteReviewById = async (id: string): Promise<true> => {
+  return await backend.delete(`/api/reviews/${id}`);
+};
