@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 import { z } from "zod";
 
 import { CustomButton, CustomInput, Rating } from "@/components";
@@ -33,6 +34,7 @@ const Create = () => {
     if (isSuccess) {
       router.push("/home");
       reset();
+      Toast.success("Review created");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);

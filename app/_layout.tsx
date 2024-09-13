@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
+import ToastManager from "toastify-react-native";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 
@@ -53,6 +54,20 @@ const RootLayout = () => {
       <AuthProvider>
         <AuthNavigator />
         <StatusBar backgroundColor="#000" style="light" />
+        <ToastManager
+          animationInTiming={600}
+          animationOutTiming={600}
+          animationIn="fadeInDown"
+          animationOut="fadeOutUp"
+          duration={2000}
+          width={170}
+          height={45}
+          showCloseIcon={false}
+          showProgressBar={false}
+          theme="light"
+          style={{ backgroundColor: "#202020", borderRadius: 50 }}
+          textStyle={{ color: "#fff", fontFamily: "Poppins-Regular", fontSize: 14 }}
+        />
       </AuthProvider>
     </QueryClientProvider>
   );
