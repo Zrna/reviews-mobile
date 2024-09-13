@@ -15,13 +15,13 @@ interface ReviewCardProps {
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
   const urlDomain = review.url && getUrlDomain(review.url);
-  const imageSource = review.img
-    ? { uri: `data:image/jpeg;base64,${review.img}` }
-    : urlDomain
-      ? streamingAppsMap[urlDomain].img
-      : defaultPoster;
 
   const showPlatformLogo = !review.img && (urlDomain === "youtube" || urlDomain === "spotify");
+  const imageSource = review.img
+    ? { uri: `data:image/jpeg;base64,${review.img}` }
+    : urlDomain && showPlatformLogo
+      ? streamingAppsMap[urlDomain].img
+      : defaultPoster;
 
   const cardSize = isBig ? "w-[200px] h-[300px]" : "w-[110px] h-[160px]";
 
