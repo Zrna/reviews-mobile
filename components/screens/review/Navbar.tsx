@@ -1,8 +1,19 @@
-import { Link, useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React from "react";
-import { Animated, Platform, View } from "react-native";
-import { ArrowLeftCircle, Edit2, Save, Search, Trash2, X } from "react-native-feather";
+import { Animated, Platform, TouchableOpacity, View } from "react-native";
+import { ArrowLeftCircle, Check, Edit2, Search, Trash2, X } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+interface IconWrapperProps {
+  onPress: () => void;
+  children: any;
+}
+
+const IconWrapper: React.FC<IconWrapperProps> = ({ onPress, children }) => (
+  <TouchableOpacity className="w-8 h-10 ml-1 items-center justify-center" onPress={onPress}>
+    {children}
+  </TouchableOpacity>
+);
 
 interface NavbarProps {
   bgColor?: Animated.AnimatedInterpolation<string | number>;
@@ -29,10 +40,16 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor, isEditMode, onEdit, onSave, on
       <SafeAreaView className="flex-row px-3 justify-between items-center top-3 w-full">
         {isEditMode ? (
           <>
-            <Trash2 stroke="red" width={26} height={26} onPress={onDelete} />
-            <View className="flex-row space-x-3">
-              <Save stroke="rgba(255,255,255,0.7)" width={28} height={28} onPress={onSave} />
-              <X stroke="rgba(255,255,255,0.7)" width={28} height={28} onPress={onCancel} />
+            <IconWrapper onPress={onDelete}>
+              <Trash2 stroke="red" width={26} height={26} />
+            </IconWrapper>
+            <View className="flex-row">
+              <IconWrapper onPress={onCancel}>
+                <X stroke="rgba(255,255,255,0.8)" width={28} height={28} />
+              </IconWrapper>
+              <IconWrapper onPress={onSave}>
+                <Check stroke="rgb(255,255,255)" width={28} height={28} />
+              </IconWrapper>
             </View>
           </>
         ) : (
@@ -44,10 +61,12 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor, isEditMode, onEdit, onSave, on
               onPress={() => navigation.goBack()}
             />
             <View className="flex-row space-x-3">
-              <Link href="search/[query]">
+              <IconWrapper onPress={() => router.push("/search/[query]")}>
                 <Search stroke="rgba(255,255,255,0.7)" width={24} height={24} />
-              </Link>
-              <Edit2 stroke="rgba(255,255,255,0.7)" width={24} height={24} onPress={onEdit} />
+              </IconWrapper>
+              <IconWrapper onPress={onEdit}>
+                <Edit2 stroke="rgba(255,255,255,0.7)" width={24} height={24} />
+              </IconWrapper>
             </View>
           </>
         )}
