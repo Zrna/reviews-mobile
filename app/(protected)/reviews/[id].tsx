@@ -165,10 +165,17 @@ const ReviewScreen = () => {
             <View
               className={`${isEditMode ? "w-1/2" : "w-1/3 items-center"} h-[${review.url || isEditMode ? "100px" : "50px"}] space-y-2`}
             >
-              <Text className="text-dimmed">Watch it here</Text>
+              <Text className="text-dimmed">{isEditMode ? "Link to watch" : "Watch it here"}</Text>
               {isEditMode ? (
                 <View className="w-full">
-                  <CustomInput control={control} name="url" className="text-sm" selectTextOnFocus keyboardType="url" />
+                  <CustomInput
+                    control={control}
+                    name="url"
+                    className="text-sm"
+                    selectTextOnFocus
+                    keyboardType="url"
+                    placeholder="Insert link"
+                  />
                 </View>
               ) : review.url ? (
                 <StreamingApp link={review.url} name={reviewUrlDomain} showName />
