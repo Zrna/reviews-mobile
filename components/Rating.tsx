@@ -3,19 +3,19 @@ import { Control, Controller } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface RatingProps {
+  hideLabel?: boolean;
   control: Control<any>;
   isReadOnly?: boolean;
-  rating?: number | null;
 }
 
-const Rating: React.FC<RatingProps> = ({ control, isReadOnly = false }) => {
+const Rating: React.FC<RatingProps> = ({ hideLabel, control, isReadOnly = false }) => {
   return (
     <Controller
       control={control}
       name="rating"
       render={({ field: { value, onChange } }) => (
         <View className="space-y-2 mb-4">
-          <Text className="text-dimmed font-pop-medium">Rating</Text>
+          {hideLabel ? null : <Text className="text-dimmed font-pop-medium">Rating</Text>}
           <View className="flex-row marker:items-center space-x-5">
             <View className="flex-row space-x-1.5">
               {Array.from(Array(5)).map((_, i) => {
