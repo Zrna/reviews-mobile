@@ -1,4 +1,4 @@
-import { CreateReview, Review, Reviews } from "@/interfaces/reviews";
+import { CreateReview, Review, Reviews, UpdateReview } from "@/interfaces/reviews";
 import { backend } from "@/services/backend";
 
 export const getReviews = async (): Promise<Reviews> => {
@@ -15,6 +15,10 @@ export const getReviewById = async (id: string): Promise<Review> => {
 
 export const createReview = async (data: CreateReview): Promise<Review> => {
   return await backend.post("/api/reviews", data);
+};
+
+export const updateReviewById = async ({ id, data }: { id: string; data: UpdateReview }): Promise<Review> => {
+  return await backend.put(`/api/reviews/${id}`, data);
 };
 
 export const deleteReviewById = async (id: string): Promise<true> => {

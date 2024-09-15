@@ -3,8 +3,15 @@ import { router } from "expo-router";
 import { Alert } from "react-native";
 import { Toast } from "toastify-react-native";
 
-import { createReview, deleteReviewById, getLatestReviews, getReviewById, getReviews } from "@/apis/reviews";
-import { CreateReview } from "@/interfaces/reviews";
+import {
+  createReview,
+  deleteReviewById,
+  getLatestReviews,
+  getReviewById,
+  getReviews,
+  updateReviewById,
+} from "@/apis/reviews";
+import { CreateReview, UpdateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
 export function useReviews() {
@@ -36,12 +43,30 @@ export const useCreateReview = () => {
     mutationFn: async (data: CreateReview) => {
       return await createReview(data);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
     },
     onError: (error) => {
       Alert.alert("", getErrorMessage(error));
+      throw error;
+    },
+  });
+};
+
+export const useUpdateReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: UpdateReview }) => {
+      return await updateReviewById({ id, data });
+    },
+    onSuccess: async (updatedData) => {
+      await queryClient.invalidateQueries({ queryKey: ["reviews", updatedData.id.toString()] });
+      Toast.success("Review updated");
+    },
+    onError: (error) => {
+      Toast.error(getErrorMessage(error), "top");
       throw error;
     },
   });

@@ -23,3 +23,10 @@ export interface CreateReview {
   url?: string | null;
   watchAgain: boolean;
 }
+
+export interface UpdateReview {
+  rating?: number | null;
+  review: string;
+  url?: string | null;
+  watchAgain: boolean;
+}
