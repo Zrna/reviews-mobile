@@ -19,8 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 
 import defaultPoster from "@/assets/images/default-poster.png";
-import { CustomButton, CustomInput, Rating } from "@/components";
-import WatchAgain from "@/components/screens/create/WatchAgain";
+import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
 import { Indicator, Navbar, StreamingApp } from "@/components/screens/review";
 import { useDeleteReview, useReviewById, useUpdateReview } from "@/hooks/api/reviews";
 import { UpdateReview } from "@/interfaces/reviews";

@@ -7,8 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 import { z } from "zod";
 
-import { CustomButton, CustomInput, Rating } from "@/components";
-import WatchAgain from "@/components/screens/create/WatchAgain";
+import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
 import { useCreateReview } from "@/hooks/api/reviews";
 import { CreateReview } from "@/interfaces/reviews";
 
