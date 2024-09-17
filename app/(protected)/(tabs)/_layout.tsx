@@ -44,7 +44,7 @@ const ProtectedLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="search/[query]"
+        name="search"
         options={{
           title: "Search",
           headerShown: false,
