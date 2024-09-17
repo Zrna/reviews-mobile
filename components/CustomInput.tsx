@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
-import { Eye, EyeOff } from "react-native-feather";
+import { Eye, EyeOff, X } from "react-native-feather";
 
 interface CustomInputProps extends TextInputProps {
   componentType?: "input" | "textarea";
@@ -11,6 +11,7 @@ interface CustomInputProps extends TextInputProps {
   rules?: Pick<RegisterOptions<FieldValues>, "maxLength" | "minLength" | "validate" | "required">;
   secureTextEntry?: boolean;
   Icon?: React.ReactElement<{ color: string; width?: number; height?: number }>;
+  onClear?: () => void;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -21,6 +22,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   label,
   secureTextEntry = false,
   Icon,
+  onClear,
   ...props
 }) => {
   const [isValueHidden, setShowIsValueHidden] = useState(secureTextEntry);
@@ -60,6 +62,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
                     ) : (
                       <EyeOff color="#D0D0D0" width={20} height={20} />
                     )}
+                  </TouchableOpacity>
+                )}
+                {onClear && props.value && (
+                  <TouchableOpacity onPress={onClear}>
+                    <X color="#D0D0D0" width={24} height={24} />
                   </TouchableOpacity>
                 )}
               </View>
