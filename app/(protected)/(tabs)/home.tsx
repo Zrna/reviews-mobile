@@ -1,8 +1,10 @@
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, ScrollView, Text, View } from "react-native";
+import { FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { FlatListWrapper } from "@/components";
+import cowImg from "@/assets/images/cow.png";
+import { CustomButton, FlatListWrapper } from "@/components";
 import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviews } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
@@ -53,31 +55,40 @@ const Home = () => {
         }
       >
         <Navbar />
-        <FlatListWrapper title="Your Latest" class="mt-5">
-          <FlatList
-            data={latestReviews?.data}
-            keyExtractor={(review) => review.id.toString()}
-            renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
-            ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-            ItemSeparatorComponent={() => <View className="w-2" />}
-            showsHorizontalScrollIndicator={false}
-            onViewableItemsChanged={viewableItemsChanged}
-            horizontal
-            viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-            contentOffset={{ x: 0, y: 0 }}
-          />
-        </FlatListWrapper>
-        <FlatListWrapper title="Your Reviews" class="mt-5">
-          <FlatList
-            data={reviews?.data}
-            keyExtractor={(review) => review.id.toString()}
-            renderItem={({ item }) => <ReviewCard review={item} />}
-            ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-            ItemSeparatorComponent={() => <View className="w-2" />}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-          />
-        </FlatListWrapper>
+        {!latestReviews?.data.length && !reviews?.data.length ? (
+          <View className="space-y-5 h-[80vh] justify-center">
+            <Image className="w-auto h-auto self-center" source={cowImg} />
+            <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
+          </View>
+        ) : (
+          <>
+            <FlatListWrapper title="Your Latest" class="mt-5">
+              <FlatList
+                data={latestReviews?.data}
+                keyExtractor={(review) => review.id.toString()}
+                renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
+                ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
+                ItemSeparatorComponent={() => <View className="w-2" />}
+                showsHorizontalScrollIndicator={false}
+                onViewableItemsChanged={viewableItemsChanged}
+                horizontal
+                viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+                contentOffset={{ x: 0, y: 0 }}
+              />
+            </FlatListWrapper>
+            <FlatListWrapper title="Your Reviews" class="mt-5">
+              <FlatList
+                data={reviews?.data}
+                keyExtractor={(review) => review.id.toString()}
+                renderItem={({ item }) => <ReviewCard review={item} />}
+                ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
+                ItemSeparatorComponent={() => <View className="w-2" />}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+              />
+            </FlatListWrapper>
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
