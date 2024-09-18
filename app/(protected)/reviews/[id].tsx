@@ -77,8 +77,8 @@ const ReviewScreen = () => {
         <CustomButton
           text="Go to All Reviews"
           isFullWidth
-          class="mt-10 bg-black border border-primary"
-          textClass="text-dimmed text-lg"
+          variant="outlined"
+          class="mt-10"
           onPress={() => router.push("/home")}
         />
       </SafeAreaView>
