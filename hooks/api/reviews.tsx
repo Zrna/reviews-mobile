@@ -8,10 +8,11 @@ import {
   deleteReviewById,
   getLatestReviews,
   getReviewById,
+  getReviewGroupedByRatings,
   getReviews,
   updateReviewById,
 } from "@/apis/reviews";
-import { CreateReview, UpdateReview } from "@/interfaces/reviews";
+import { CreateReview, GetReviewsGroupedByRatingsParams, UpdateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
 export function useReviews() {
@@ -44,7 +45,7 @@ export const useCreateReview = () => {
       return await createReview(data);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
     },
     onError: (error) => {
@@ -80,7 +81,7 @@ export const useDeleteReview = () => {
       return await deleteReviewById(id);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
       router.push("/home");
       Toast.success("Review deleted");
@@ -89,5 +90,14 @@ export const useDeleteReview = () => {
       Alert.alert("", getErrorMessage(error));
       throw error;
     },
+  });
+};
+
+export const useReviewsGroupedByRatings = (options?: GetReviewsGroupedByRatingsParams) => {
+  const { count = 10, rating = undefined } = options || {};
+
+  return useQuery({
+    queryKey: ["reviewsGroupedByRatings", count, rating],
+    queryFn: () => getReviewGroupedByRatings({ count, rating }),
   });
 };

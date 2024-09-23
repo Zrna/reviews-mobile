@@ -6,12 +6,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import cowImg from "@/assets/images/cow.png";
 import { CustomButton, FlatListWrapper } from "@/components";
 import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
-import { useLatestReviews, useReviews } from "@/hooks/api/reviews";
+import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
 
 const Home = () => {
   const { data: latestReviews, refetch: refetchLatestReviews, isLoading: isLoadingLatestReviews } = useLatestReviews();
-  const { data: reviews, refetch: refetchReviews, isRefetching, isLoading: isLoadingReviews } = useReviews();
+
+  const {
+    data: reviews,
+    refetch: refetchReviews,
+    isRefetching,
+    isLoading: isLoadingReviews,
+  } = useReviewsGroupedByRatings();
 
   const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
 
@@ -27,10 +33,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (reviews?.data.length) {
-      setActiveLatestReviewCard(reviews.data[0]);
+    if (latestReviews?.data.length) {
+      setActiveLatestReviewCard(latestReviews.data[0]);
     }
-  }, [reviews]);
+  }, [latestReviews]);
 
   if (isLoadingLatestReviews || isLoadingReviews) {
     return (
@@ -55,7 +61,7 @@ const Home = () => {
         }
       >
         <Navbar />
-        {!latestReviews?.data.length && !reviews?.data.length ? (
+        {!latestReviews?.data.length && !reviews?.length ? (
           <View className="space-y-5 h-[80vh] justify-center">
             <Image className="w-auto h-auto self-center" source={cowImg} />
             <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
@@ -76,17 +82,23 @@ const Home = () => {
                 contentOffset={{ x: 0, y: 0 }}
               />
             </FlatListWrapper>
-            <FlatListWrapper title="Your Reviews" class="mt-5">
-              <FlatList
-                data={reviews?.data}
-                keyExtractor={(review) => review.id.toString()}
-                renderItem={({ item }) => <ReviewCard review={item} />}
-                ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-                ItemSeparatorComponent={() => <View className="w-2" />}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-              />
-            </FlatListWrapper>
+            {reviews?.map(({ rating, reviews }) => (
+              <FlatListWrapper
+                title={rating ? `${rating}-Star Reviews` : "Not rated"}
+                class={`mt-6 ${rating === null && "mb-10"}`}
+                key={`${rating}-star-reviews-section`}
+              >
+                <FlatList
+                  data={reviews}
+                  keyExtractor={(review) => review.id.toString()}
+                  renderItem={({ item }) => <ReviewCard review={item} />}
+                  ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
+                  ItemSeparatorComponent={() => <View className="w-2" />}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                />
+              </FlatListWrapper>
+            ))}
           </>
         )}
       </ScrollView>

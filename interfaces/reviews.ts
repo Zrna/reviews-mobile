@@ -30,3 +30,13 @@ export interface UpdateReview {
   url?: string | null;
   watchAgain: boolean;
 }
+
+export interface GetReviewsGroupedByRatingsParams {
+  count?: number;
+  rating?: number;
+}
+
+export type ReviewsGroupedByRatings = {
+  rating: number;
+  reviews: Review[];
+}[];
