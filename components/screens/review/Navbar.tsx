@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor, isEditMode, onEdit, onSave, on
               onPress={() => navigation.goBack()}
             />
             <View className="flex-row space-x-3">
-              <IconWrapper onPress={() => router.push("/search/[query]")}>
+              <IconWrapper onPress={() => router.push("/search")}>
                 <Search stroke="rgba(255,255,255,0.7)" width={24} height={24} />
               </IconWrapper>
               <IconWrapper onPress={onEdit}>

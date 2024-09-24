@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
     >
       <Image source={logoSmall} className="w-14 h-6" resizeMode="contain" />
       {showSearch && (
-        <Link href="search/[query]">
+        <Link href="/search">
           <Search stroke="white" width={24} height={24} />
         </Link>
       )}
