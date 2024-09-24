@@ -22,13 +22,13 @@ const ProtectedLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveBackgroundColor: "black",
-        tabBarInactiveBackgroundColor: "black",
+        tabBarActiveBackgroundColor: "#0E0E0E", // theme dark color
+        tabBarInactiveBackgroundColor: "#0E0E0E", // theme dark color
         tabBarInactiveTintColor: "#d9d9d9",
         tabBarActiveTintColor: "white",
         tabBarShowLabel: false, // show or hide the tab labels
         tabBarStyle: {
-          backgroundColor: "black",
+          backgroundColor: "#0E0E0E", // theme dark color
           borderTopWidth: 0.2,
           borderTopColor: "#A1A1A1",
         },
