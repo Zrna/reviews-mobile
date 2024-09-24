@@ -10,6 +10,18 @@ export const AuthNavigator = () => {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(protected)/(tabs)" />
         <Stack.Screen name="(protected)/reviews/[id]" />
+        <Stack.Screen
+          name="(protected)/reviews/grouped-by-rating/[rating]"
+          options={{
+            headerShown: true,
+            title: "",
+            headerBackTitleVisible: false,
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "black",
+            },
+          }}
+        />
       </Stack>
     );
   } else {

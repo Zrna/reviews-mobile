@@ -87,6 +87,7 @@ const Home = () => {
                 title={rating ? `${rating}-Star Reviews` : "Not rated"}
                 class={`mt-6 ${rating === null && "mb-10"}`}
                 key={`${rating}-star-reviews-section`}
+                onPress={reviews.length ? () => router.push(`/reviews/grouped-by-rating/${rating || 0}`) : undefined}
               >
                 <FlatList
                   data={reviews}

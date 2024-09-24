@@ -36,7 +36,7 @@ export const getReviewGroupedByRatings = async ({
   count,
   rating,
 }: GetReviewsGroupedByRatingsParams): Promise<ReviewsGroupedByRatings> => {
-  return await backend.get(`/api/reviews/grouped-by-ratings/${rating ? rating : ""}`, {
+  return await backend.get(`/api/reviews/grouped-by-ratings/${typeof rating === "number" ? rating : ""}`, {
     params: {
       count,
     },
