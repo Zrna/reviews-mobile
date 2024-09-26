@@ -12,6 +12,7 @@ const ReviewGroupedByRatingScreen = () => {
   const navigation = useNavigation();
   const { rating } = useLocalSearchParams();
 
+  // TODO: implement infinite scroll using react-query's useInfiniteQuery
   const {
     data: groupedReviews,
     isLoading,
