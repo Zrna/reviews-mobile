@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
@@ -20,11 +20,14 @@ const CreateSchema = z.object({
 });
 
 const Create = () => {
+  const { name } = useLocalSearchParams(); // the name param is from the search screen input
+
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
     reset,
+    setValue,
   } = useForm<CreateReview>({ resolver: zodResolver(CreateSchema) });
 
   const { mutateAsync: createReview, isSuccess } = useCreateReview();
@@ -37,6 +40,12 @@ const Create = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (name) {
+      setValue("name", name as string);
+    }
+  }, [name, setValue]);
 
   return (
     <KeyboardAvoidingView

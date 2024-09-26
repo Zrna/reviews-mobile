@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
@@ -5,7 +6,7 @@ import { Search as SearchIcon } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import cowImg from "@/assets/images/cow.png";
-import { CustomInput } from "@/components";
+import { CustomButton, CustomInput } from "@/components";
 import { ReviewCard } from "@/components/screens/home";
 import { useReviews } from "@/hooks/api/reviews";
 
@@ -62,6 +63,11 @@ const Search = () => {
                 <View className="space-y-5">
                   <Text className="text-dimmed self-center">No Reviews Found</Text>
                   <Image className="w-auto h-auto self-center" source={cowImg} />
+                  <CustomButton
+                    text={`Add review for ${search}`}
+                    onPress={() => router.push("/create?name=" + search)}
+                    class="mt-10"
+                  />
                 </View>
               }
             />
