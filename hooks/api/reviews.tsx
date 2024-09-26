@@ -8,8 +8,8 @@ import {
   deleteReviewById,
   getLatestReviews,
   getReviewById,
-  getReviewGroupedByRatings,
   getReviews,
+  getReviewsGroupedByRatings as getReviewsGroupedByRatingsApi,
   updateReviewById,
 } from "@/apis/reviews";
 import { CreateReview, GetReviewsGroupedByRatingsParams, UpdateReview } from "@/interfaces/reviews";
@@ -98,6 +98,6 @@ export const useReviewsGroupedByRatings = (options?: GetReviewsGroupedByRatingsP
 
   return useQuery({
     queryKey: ["reviewsGroupedByRatings", count, rating],
-    queryFn: () => getReviewGroupedByRatings({ count, rating }),
+    queryFn: () => getReviewsGroupedByRatingsApi({ count, rating }),
   });
 };

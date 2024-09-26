@@ -32,11 +32,14 @@ export const getReviewById = async (id: string): Promise<Review> => {
   return await backend.get(`/api/reviews/${id}`);
 };
 
-export const getReviewGroupedByRatings = async ({
+export const getReviewsGroupedByRatings = async ({
   count,
   rating,
 }: GetReviewsGroupedByRatingsParams): Promise<ReviewsGroupedByRatings> => {
-  return await backend.get(`/api/reviews/grouped-by-ratings/${typeof rating === "number" ? rating : ""}`, {
+  const ratingParam = typeof rating === "number" ? `/${rating}` : "";
+  const query = typeof count === "number" ? `?count=${count}` : "";
+
+  return await backend.get(`/api/reviews/grouped-by-ratings${ratingParam}${query}`, {
     params: {
       count,
     },
