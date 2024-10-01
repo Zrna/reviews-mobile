@@ -2,6 +2,7 @@ import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 
 import cowImg from "@/assets/images/cow.png";
 import { CustomButton } from "@/components";
@@ -18,6 +19,7 @@ const ReviewGroupedByRatingScreen = () => {
     isLoading,
     refetch,
     isRefetching,
+    isError,
   } = useReviewsGroupedByRatings({
     count: 18,
     rating: rating ? parseInt(rating as string) : undefined,
@@ -32,6 +34,13 @@ const ReviewGroupedByRatingScreen = () => {
       }
     }
   }, [rating, navigation]);
+
+  useEffect(() => {
+    if (isError) {
+      Toast.error("Something went wrong", "top");
+      navigation.goBack();
+    }
+  }, [isError, navigation]);
 
   return (
     <SafeAreaView className="h-full justify-center items-center bg-black px-3.5 pb-1">
