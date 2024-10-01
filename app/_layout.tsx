@@ -60,8 +60,8 @@ const RootLayout = () => {
           animationIn="fadeInDown"
           animationOut="fadeOutUp"
           duration={2000}
-          width={170}
-          height={45}
+          width="auto"
+          height={45} // TODO: update the toastify-react-native package to support the `auto` value
           showCloseIcon={false}
           showProgressBar={false}
           theme="light"
