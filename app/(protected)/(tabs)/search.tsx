@@ -65,7 +65,14 @@ const Search = () => {
                   <Image className="w-auto h-auto self-center" source={cowImg} />
                   <CustomButton
                     text={`Add review for ${search}`}
-                    onPress={() => router.push("/create?name=" + search)}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/create",
+                        params: {
+                          name: search,
+                        },
+                      })
+                    }
                     class="mt-10"
                   />
                 </View>

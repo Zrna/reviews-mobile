@@ -21,7 +21,10 @@ const StreamingApp: React.FC<StreamingAppProps> = ({ name, link, showName = fals
     const isIOS = Platform.OS === "ios";
 
     return (
-      <Link href={link ? addUrlProtocol(link) : app.link} className={`h-[70px] ${isIOS ? "mt-[15%]" : ""} text-center`}>
+      <Link
+        href={(link ? addUrlProtocol(link) : app.link) as any}
+        className={`h-[70px] ${isIOS ? "mt-[15%]" : ""} text-center`}
+      >
         <Image source={app.img} className="w-[100px] h-12" resizeMode="contain" />
       </Link>
     );
@@ -29,7 +32,7 @@ const StreamingApp: React.FC<StreamingAppProps> = ({ name, link, showName = fals
 
   if (name && showName) {
     return (
-      <Link href={link ? addUrlProtocol(link) : ""} className="mt-2">
+      <Link href={(link ? addUrlProtocol(link) : "") as any} className="mt-2">
         <Text className="font-pop-regular text-white">{name}</Text>
       </Link>
     );
