@@ -61,7 +61,7 @@ const Home = () => {
         }
       >
         <Navbar />
-        {!latestReviews?.data.length && !reviews?.length ? (
+        {!latestReviews?.data.length && reviews?.every((group) => group.reviews.length === 0) ? (
           <View className="space-y-5 h-[80vh] justify-center">
             <Image className="w-auto h-auto self-center" source={cowImg} />
             <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />

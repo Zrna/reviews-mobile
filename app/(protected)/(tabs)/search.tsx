@@ -64,7 +64,7 @@ const Search = () => {
                   <Text className="text-dimmed self-center">No Reviews Found</Text>
                   <Image className="w-auto h-auto self-center" source={cowImg} />
                   <CustomButton
-                    text={`Add review for ${search}`}
+                    text={search ? `Add review for ${search}` : "Create a review"}
                     onPress={() =>
                       router.push({
                         pathname: "/create",
