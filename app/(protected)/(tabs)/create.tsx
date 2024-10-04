@@ -3,7 +3,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 import { z } from "zod";
 
@@ -32,6 +32,8 @@ const Create = () => {
 
   const { mutateAsync: createReview, isSuccess } = useCreateReview();
 
+  const safeAreaInsets = useSafeAreaInsets();
+
   useEffect(() => {
     if (isSuccess) {
       router.push("/home");
@@ -52,7 +54,12 @@ const Create = () => {
       behavior={Platform.select({ android: undefined, ios: "padding" })}
       keyboardVerticalOffset={-200}
     >
-      <SafeAreaView className="bg-black">
+      <SafeAreaView
+        className="bg-black"
+        style={{
+          paddingBottom: -safeAreaInsets.bottom, // fixes the SafeAreaView padding issue on tab bar
+        }}
+      >
         <ScrollView
           refreshControl={
             <RefreshControl

@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import cowImg from "@/assets/images/cow.png";
 import { CustomButton, FlatListWrapper } from "@/components";
@@ -19,6 +19,7 @@ const Home = () => {
     isLoading: isLoadingReviews,
   } = useReviewsGroupedByRatings();
 
+  const safeAreaInsets = useSafeAreaInsets();
   const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
 
   const viewableItemsChanged = ({ viewableItems }: { viewableItems: any[] }) => {
@@ -47,7 +48,12 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView className="bg-black">
+    <SafeAreaView
+      className="flex-1 bg-black"
+      style={{
+        paddingBottom: -safeAreaInsets.bottom, // fixes the SafeAreaView padding issue on tab bar
+      }}
+    >
       <ScrollView
         className="px-3 space-y-10"
         stickyHeaderIndices={[0]} // Ensure the index matches the position of the header

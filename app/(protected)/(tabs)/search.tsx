@@ -23,7 +23,7 @@ const Search = () => {
   return (
     // we use the `View` instead of `SafeAreaView` because we're using the header tab back button.
     // the `SafeAreaView` will add unnecessary padding to the bottom of the tab bar.
-    <View className="justify-center items-center bg-black px-3.5 pb-1">
+    <View className="flex-1 justify-center items-center bg-black px-3.5">
       <CustomInput
         control={control}
         placeholder="Search movies, shows..."
