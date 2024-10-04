@@ -22,7 +22,17 @@ const Search = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <SafeAreaView className="h-full justify-center items-center bg-black pt-5 px-3.5 pb-1">
+    <SafeAreaView className="h-full justify-center items-center bg-black px-3.5 pb-1">
+      <CustomInput
+        control={control}
+        placeholder="Search movies, shows..."
+        name="search"
+        onClear={() => setSearch("")}
+        Icon={<SearchIcon stroke="rgba(255,255,255,0.4)" width={28} height={28} />}
+        autoFocus
+        value={search}
+        onChangeText={setSearch}
+      />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         className="w-full"
@@ -35,16 +45,6 @@ const Search = () => {
           />
         }
       >
-        <CustomInput
-          control={control}
-          placeholder="Search movies, shows..."
-          name="search"
-          onClear={() => setSearch("")}
-          Icon={<SearchIcon stroke="rgba(255,255,255,0.4)" width={28} height={28} />}
-          autoFocus
-          value={search}
-          onChangeText={setSearch}
-        />
         {isLoadingReviews ? (
           <View className="h-[90%]">
             <ActivityIndicator color="white" />
