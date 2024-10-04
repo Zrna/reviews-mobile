@@ -5,6 +5,7 @@ import { Eye, EyeOff, X } from "react-native-feather";
 
 interface CustomInputProps extends TextInputProps {
   componentType?: "input" | "textarea";
+  containerClassName?: string;
   name: string;
   label?: string;
   control: Control<any>;
@@ -16,6 +17,7 @@ interface CustomInputProps extends TextInputProps {
 
 const CustomInput: React.FC<CustomInputProps> = ({
   componentType = "input",
+  containerClassName,
   control,
   name,
   rules = {},
@@ -35,7 +37,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       rules={rules}
       render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => {
         return (
-          <View className="w-full space-y-1 mb-4">
+          <View className={`w-full space-y-1 mb-4 ${containerClassName}`}>
             <View className="space-y-1">
               {label && <Text className="text-dimmed font-pop-medium">{label}</Text>}
               <View
