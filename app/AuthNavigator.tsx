@@ -7,7 +7,12 @@ export const AuthNavigator = () => {
 
   if (authState.isLoggedIn) {
     return (
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "black" },
+        }}
+      >
         <Stack.Screen name="(protected)/(tabs)" />
         <Stack.Screen name="(protected)/reviews/[id]" />
         <Stack.Screen
