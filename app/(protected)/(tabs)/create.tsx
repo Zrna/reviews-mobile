@@ -52,7 +52,7 @@ const Create = () => {
       behavior={Platform.select({ android: undefined, ios: "padding" })}
       keyboardVerticalOffset={-200}
     >
-      <SafeAreaView className="h-full bg-black">
+      <SafeAreaView className="bg-black">
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -64,7 +64,7 @@ const Create = () => {
           }
           automaticallyAdjustKeyboardInsets
         >
-          <View className="w-full min-h-[85vh] p-4 pt-8 space-y-8">
+          <View className="w-full p-4 pt-8 space-y-8">
             <Text className="text-white font-pop-bold text-xl">Create a review</Text>
             <View>
               <CustomInput control={control} name="name" label="Movie/TV show name" />

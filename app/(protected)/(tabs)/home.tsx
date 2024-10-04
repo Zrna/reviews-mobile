@@ -47,7 +47,7 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView className="h-full bg-black">
+    <SafeAreaView className="bg-black">
       <ScrollView
         className="px-3 space-y-10"
         stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
