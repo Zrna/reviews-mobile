@@ -2,6 +2,8 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Home, PlusSquare, Search, User } from "react-native-feather";
 
+import { BackButton } from "@/components";
+
 interface TabIconProps {
   color: string;
   IconComponent: React.FC<{
@@ -47,7 +49,12 @@ const ProtectedLayout = () => {
         name="search"
         options={{
           title: "Search",
-          headerShown: false,
+          headerShown: true,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerLeft: () => <BackButton />,
           tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={Search} />,
         }}
       />

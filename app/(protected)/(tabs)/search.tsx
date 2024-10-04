@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { Search as SearchIcon } from "react-native-feather";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import cowImg from "@/assets/images/cow.png";
 import { CustomButton, CustomInput } from "@/components";
@@ -22,7 +21,9 @@ const Search = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <SafeAreaView className="h-full justify-center items-center bg-black px-3.5 pb-1">
+    // we use the `View` instead of `SafeAreaView` because we're using the header tab back button.
+    // the `SafeAreaView` will add unnecessary padding to the bottom of the tab bar.
+    <View className="justify-center items-center bg-black px-3.5 pb-1">
       <CustomInput
         control={control}
         placeholder="Search movies, shows..."
@@ -32,6 +33,7 @@ const Search = () => {
         autoFocus
         value={search}
         onChangeText={setSearch}
+        containerClassName="mt-3"
       />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -81,7 +83,7 @@ const Search = () => {
           </>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
