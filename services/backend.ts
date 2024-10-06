@@ -4,7 +4,7 @@ type AxiosFunction = <T>(url: string, config?: AxiosRequestConfig) => Promise<T>
 type AxiosDataFunction = <T>(url: string, data?: any, config?: AxiosRequestConfig) => Promise<T>;
 
 function backendService() {
-  const baseURL = process.env.NODE_ENV === "production" ? "http://192.168.100.5:5001" : "http://192.168.100.5:5001";
+  const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
   const instance = axios.create({
     baseURL,
