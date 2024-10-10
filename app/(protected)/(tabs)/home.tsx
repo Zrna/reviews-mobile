@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-import cowImg from "@/assets/images/cow.png";
+import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton, FlatListWrapper } from "@/components";
 import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";

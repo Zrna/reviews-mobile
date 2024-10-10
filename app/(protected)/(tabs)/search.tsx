@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { Search as SearchIcon } from "react-native-feather";
 
-import cowImg from "@/assets/images/cow.png";
+import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton, CustomInput } from "@/components";
 import { ReviewCard } from "@/components/screens/home";
 import { useReviews } from "@/hooks/api/reviews";

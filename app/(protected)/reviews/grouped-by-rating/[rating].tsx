@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, View } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 
-import cowImg from "@/assets/images/cow.png";
+import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton } from "@/components";
 import { ReviewCard } from "@/components/screens/home";
 import { useReviewsGroupedByRatings } from "@/hooks/api/reviews";
