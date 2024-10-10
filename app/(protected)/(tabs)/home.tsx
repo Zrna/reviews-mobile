@@ -1,17 +1,21 @@
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
+import { router, useNavigation } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
+import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Plus } from "react-native-feather";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import cowImg from "@/assets/images/cow/cow.png";
+import cowWithCup from "@/assets/images/cow/cow-with-cup.png";
 import { CustomButton, FlatListWrapper } from "@/components";
 import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
 
 const Home = () => {
-  const { data: latestReviews, refetch: refetchLatestReviews, isLoading: isLoadingLatestReviews } = useLatestReviews();
+  const navigation = useNavigation();
+  const safeAreaInsets = useSafeAreaInsets();
 
+  const { data: latestReviews, refetch: refetchLatestReviews, isLoading: isLoadingLatestReviews } = useLatestReviews();
   const {
     data: reviews,
     refetch: refetchReviews,
@@ -19,8 +23,8 @@ const Home = () => {
     isLoading: isLoadingReviews,
   } = useReviewsGroupedByRatings();
 
-  const safeAreaInsets = useSafeAreaInsets();
   const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const viewableItemsChanged = ({ viewableItems }: { viewableItems: any[] }) => {
     if (viewableItems.length > 0) {
@@ -32,6 +36,14 @@ const Home = () => {
     await refetchLatestReviews();
     await refetchReviews();
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      scrollViewRef.current?.scrollTo({ y: 0 });
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (latestReviews?.data.length) {
@@ -55,6 +67,7 @@ const Home = () => {
       }}
     >
       <ScrollView
+        ref={scrollViewRef}
         className="px-3 space-y-10"
         stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
         refreshControl={
@@ -86,6 +99,18 @@ const Home = () => {
                 horizontal
                 viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
                 contentOffset={{ x: 0, y: 0 }}
+                ListFooterComponent={
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    className="w-[200px] h-[300px] flex-row space-x-1 p-6 justify-center items-center ml-2"
+                    onPress={() => router.push("/create")}
+                    style={{ borderWidth: 3, borderStyle: "dashed", borderColor: "#23C06B", borderRadius: 6 }}
+                  >
+                    <Image source={cowWithCup} className="w-[150px] h-[150px] absolute bottom-[-70px] right-0 flex-1" />
+                    <Plus stroke="white" width={20} height={20} />
+                    <Text className="text-white font-pop-medium text-lg">Add new</Text>
+                  </TouchableOpacity>
+                }
               />
             </FlatListWrapper>
             {reviews?.map(({ rating, reviews }) => (
