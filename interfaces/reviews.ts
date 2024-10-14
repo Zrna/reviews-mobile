@@ -1,12 +1,15 @@
 export interface Review {
   id: number;
-  img: string | null;
   userId: number;
+  imageId: string | null;
   name: string;
   rating: number | null;
   review: string;
   url: string | null;
   watchAgain: boolean;
+  image: null | {
+    img: string;
+  };
   createdAt: string;
   updatedAt: string;
 }

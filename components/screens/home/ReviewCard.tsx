@@ -16,9 +16,9 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
   const urlDomain = review.url && getUrlDomain(review.url);
 
-  const showPlatformLogo = !review.img && (urlDomain === "youtube" || urlDomain === "spotify");
-  const imageSource = review.img
-    ? { uri: `data:image/jpeg;base64,${review.img}` }
+  const showPlatformLogo = !review.image && (urlDomain === "youtube" || urlDomain === "spotify");
+  const imageSource = review.image
+    ? { uri: `data:image/jpeg;base64,${review.image.img}` }
     : urlDomain && showPlatformLogo
       ? streamingAppsMap[urlDomain].img
       : defaultPoster;
