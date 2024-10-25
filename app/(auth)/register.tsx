@@ -11,7 +11,7 @@ import { CustomButton, CustomInput } from "@/components";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { RegisterProps } from "@/interfaces/auth";
 
-const RegisterSchema = z.object({
+export const RegisterFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password must contain at least 6 characters"),
   firstName: z.string().min(2, "First name must contain at least 2 characters"),
@@ -25,7 +25,7 @@ const Register = () => {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<RegisterProps>({ resolver: zodResolver(RegisterSchema) });
+  } = useForm<RegisterProps>({ resolver: zodResolver(RegisterFormSchema) });
 
   return (
     <SafeAreaView className="h-full bg-black">
