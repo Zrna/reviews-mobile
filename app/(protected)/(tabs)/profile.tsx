@@ -5,6 +5,7 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { LogOut } from "react-native-feather";
 import { Edit2, X } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 
 import { RegisterFormSchema } from "@/app/(auth)/register";
 import { CustomButton, CustomInput, IconWrapper } from "@/components";
@@ -98,7 +99,16 @@ const Profile = () => {
             </IconWrapper>
           </View>
         )}
-        <Text className={`${isEditMode ? "text-light-dark" : "text-white"} text-xl`}>{email}</Text>
+        <Text
+          className={`${isEditMode ? "text-light-dark" : "text-white"} text-xl`}
+          onPress={() => {
+            if (isEditMode) {
+              Toast.info("Email cannot be changed");
+            }
+          }}
+        >
+          {email}
+        </Text>
       </View>
     </SafeAreaView>
   );
