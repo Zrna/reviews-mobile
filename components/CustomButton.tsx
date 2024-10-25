@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 const variantsMap = {
   primary: {
@@ -20,13 +20,14 @@ const variantsMap = {
 };
 
 interface CustomButtonProps {
-  text: string;
+  text?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
   isFullWidth?: boolean;
   class?: string;
   textClass?: string;
   variant?: keyof typeof variantsMap;
+  icon?: React.ReactNode;
   onPress?: () => void;
 }
 
@@ -38,6 +39,7 @@ const CustomButton = ({
   isDisabled,
   isFullWidth,
   variant = "primary",
+  icon,
   onPress,
 }: CustomButtonProps) => {
   return (
@@ -50,7 +52,12 @@ const CustomButton = ({
       {isLoading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <Text className={`${variantsMap[variant].text} font-pop-semibold text-lg ${textClass}`}>{text}</Text>
+        <View className="flex-row space-x-1.5 items-center">
+          {icon && icon}
+          {text && (
+            <Text className={`${variantsMap[variant].text} font-pop-semibold text-lg ${textClass}`}>{text}</Text>
+          )}
+        </View>
       )}
     </TouchableOpacity>
   );
