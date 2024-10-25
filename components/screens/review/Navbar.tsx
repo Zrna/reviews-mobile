@@ -1,19 +1,10 @@
 import { router, useNavigation } from "expo-router";
 import React from "react";
-import { Animated, Platform, TouchableOpacity, View } from "react-native";
+import { Animated, Platform, View } from "react-native";
 import { ArrowLeftCircle, Check, Edit2, Search, Trash2, X } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-interface IconWrapperProps {
-  onPress: () => void;
-  children: any;
-}
-
-const IconWrapper: React.FC<IconWrapperProps> = ({ onPress, children }) => (
-  <TouchableOpacity className="w-8 h-10 ml-1 items-center justify-center" onPress={onPress}>
-    {children}
-  </TouchableOpacity>
-);
+import IconWrapper from "@/components/IconWrapper";
 
 interface NavbarProps {
   bgColor?: Animated.AnimatedInterpolation<string | number>;
