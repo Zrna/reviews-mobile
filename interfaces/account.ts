@@ -6,3 +6,8 @@ export interface AccountData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UpdateAccountProps {
+  firstName: string;
+  lastName: string;
+}
