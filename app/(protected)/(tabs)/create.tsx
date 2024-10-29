@@ -70,6 +70,7 @@ const Create = () => {
             />
           }
           automaticallyAdjustKeyboardInsets
+          keyboardShouldPersistTaps="handled"
         >
           <View className="w-full p-4 pt-8 space-y-8">
             <Text className="text-white font-pop-bold text-xl">Create a review</Text>
