@@ -1,8 +1,7 @@
 import * as Animatable from "react-native-animatable";
 
+import ReviewCard from "@/components/ReviewCard";
 import { Review } from "@/interfaces/reviews";
-
-import ReviewCard from "./ReviewCard";
 
 const zoomIn = {
   from: {

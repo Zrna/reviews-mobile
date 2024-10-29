@@ -6,7 +6,7 @@ import { Toast } from "toastify-react-native";
 
 import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton } from "@/components";
-import { ReviewCard } from "@/components/screens/home";
+import ReviewCard from "@/components/ReviewCard";
 import { useReviewsGroupedByRatings } from "@/hooks/api/reviews";
 
 const ReviewGroupedByRatingScreen = () => {

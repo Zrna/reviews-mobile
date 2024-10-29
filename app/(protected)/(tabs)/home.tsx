@@ -6,8 +6,8 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 
 import cowImg from "@/assets/images/cow/cow.png";
 import cowWithCup from "@/assets/images/cow/cow-with-cup.png";
-import { CustomButton, FlatListWrapper } from "@/components";
-import { LatestReviewCard, Navbar, ReviewCard, Skeleton } from "@/components/screens/home";
+import { CustomButton, FlatListWrapper, ReviewCard } from "@/components";
+import { LatestReviewCard, Navbar, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
 

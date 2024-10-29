@@ -6,7 +6,7 @@ import { Search as SearchIcon } from "react-native-feather";
 
 import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton, CustomInput } from "@/components";
-import { ReviewCard } from "@/components/screens/home";
+import ReviewCard from "@/components/ReviewCard";
 import { useReviews } from "@/hooks/api/reviews";
 
 const Search = () => {
