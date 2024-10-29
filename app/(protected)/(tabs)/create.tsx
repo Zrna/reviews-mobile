@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 import { z } from "zod";
@@ -81,7 +81,7 @@ const Create = () => {
               <WatchAgain control={control} />
               <CustomInput control={control} name="review" label="Your Review" componentType="textarea" />
               <CustomButton
-                onPress={handleSubmit(async (data) => await createReview(data))}
+                onPress={handleSubmit(async (data) => (Keyboard.dismiss(), await createReview(data)))}
                 isFullWidth
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}
