@@ -6,6 +6,7 @@ import { Image, Text, View } from "react-native";
 import defaultPoster from "@/assets/images/default-poster.png";
 import { Review } from "@/interfaces/reviews";
 import { streamingAppsMap } from "@/utils/platforms";
+import { truncateString } from "@/utils/string";
 import { getUrlDomain } from "@/utils/url";
 
 interface ReviewCardProps {
@@ -39,7 +40,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, isBig = false }) => {
           colors={["transparent", "rgba(0,0,0,0.7)"]}
           className="absolute bottom-0 w-full p-2 rounded-b-md"
         >
-          <Text className="text-white font-pop-regular">{review.name}</Text>
+          <Text className="text-white font-pop-regular">{truncateString(review.name, isBig ? 45 : 23)}</Text>
         </LinearGradient>
       </View>
     </Link>
