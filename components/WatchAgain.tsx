@@ -1,5 +1,5 @@
 import { Control, Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import { Keyboard, Text, View } from "react-native";
 
 interface WatchAgainProps {
   control: Control<any>;
@@ -15,13 +15,13 @@ const WatchAgain: React.FC<WatchAgainProps> = ({ control }) => {
           <Text className="text-dimmed font-pop-medium">Watch again or recommend?</Text>
           <View className="flex-row space-x-4">
             <Text
-              onPress={() => onChange(true)}
+              onPress={() => (onChange(true), Keyboard.dismiss())}
               className={`text-lg ${value === true ? "text-primary" : "text-dimmed opacity-50"}`}
             >
               Yes
             </Text>
             <Text
-              onPress={() => onChange(false)}
+              onPress={() => (onChange(false), Keyboard.dismiss())}
               className={`text-lg ${value === false ? "text-primary" : "text-dimmed opacity-50"}`}
             >
               No

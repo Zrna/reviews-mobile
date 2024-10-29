@@ -1,6 +1,6 @@
 import React from "react";
 import { Control, Controller } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 
 interface RatingProps {
   hideLabel?: boolean;
@@ -30,6 +30,7 @@ const Rating: React.FC<RatingProps> = ({ hideLabel, control, isReadOnly = false 
                       if (!isReadOnly) {
                         onChange && onChange(elementValue);
                       }
+                      Keyboard.dismiss();
                     }}
                   >
                     <View className={`w-2 h-2 rounded-full ${isActive ? "bg-primary" : "bg-white"}`} />
