@@ -18,6 +18,10 @@ export const streamingAppsMap: { [key: string]: { link: string; img: any } } = {
     link: "https://play.max.com/",
     img: maxLogo,
   },
+  hbo: {
+    link: "https://play.max.com/",
+    img: maxLogo,
+  },
   disneyplus: {
     link: "https://www.disneyplus.com",
     img: disneyPlusLogo,
