@@ -16,6 +16,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Toast } from "toastify-react-native";
 import { z } from "zod";
 
 import defaultPoster from "@/assets/images/default-poster.png";
@@ -147,7 +148,12 @@ const ReviewScreen = () => {
         </ImageBackground>
         <View className="p-3 pt-0 space-y-4">
           <View className="mb-2">
-            <Text className="text-white text-4xl font-pop-semibold self-center">{review.name}</Text>
+            <Text
+              className="text-white text-4xl font-pop-semibold self-center"
+              onPress={() => isEditMode && Toast.warn("Name can't be changed")}
+            >
+              {review.name}
+            </Text>
             {isEditMode ? (
               <View className="items-center mt-2">
                 <Rating control={control} hideLabel />
