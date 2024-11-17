@@ -6,9 +6,9 @@ import * as SystemUI from "expo-system-ui";
 import React, { useEffect } from "react";
 import ToastManager from "toastify-react-native";
 
-import { AuthProvider } from "@/contexts/AuthContext";
+import AuthProvider from "@/contexts/AuthContext";
 
-import { AuthNavigator } from "./AuthNavigator";
+import AuthNavigator from "./AuthNavigator";
 
 SystemUI.setBackgroundColorAsync("black");
 

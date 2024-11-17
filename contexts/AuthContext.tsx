@@ -1,7 +1,7 @@
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
@@ -30,7 +30,7 @@ const AuthContext = createContext<AuthContextProps>({
   },
 });
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigation = useNavigation();
   const queryClient = useQueryClient();
 
@@ -136,3 +136,5 @@ export const useAuthContext = () => {
 
   return context;
 };
+
+export default AuthProvider;

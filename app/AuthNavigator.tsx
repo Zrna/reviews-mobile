@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAuthContext } from "@/contexts/AuthContext";
 
-export const AuthNavigator = () => {
+const AuthNavigator = () => {
   const { authState } = useAuthContext();
 
   if (authState.isLoggedIn) {
@@ -20,7 +20,6 @@ export const AuthNavigator = () => {
           options={{
             headerShown: true,
             title: "",
-            headerBackTitleVisible: false,
             headerTintColor: "white",
             headerStyle: {
               backgroundColor: "black",
@@ -38,3 +37,5 @@ export const AuthNavigator = () => {
     );
   }
 };
+
+export default AuthNavigator;

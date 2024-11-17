@@ -6,6 +6,7 @@ module.exports = {
     ecmaVersion: "latest",
   },
   rules: {
+    "@typescript-eslint/no-wrapper-object-types": "off",
     "prettier/prettier": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
