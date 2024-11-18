@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
 
 import { useAuthContext } from "@/contexts/AuthContext";
+import withNetworkCheck from "@/hocs/withNetworkCheck";
 
 const AuthNavigator = () => {
   const { authState } = useAuthContext();
@@ -38,4 +39,4 @@ const AuthNavigator = () => {
   }
 };
 
-export default AuthNavigator;
+export default withNetworkCheck(AuthNavigator);
