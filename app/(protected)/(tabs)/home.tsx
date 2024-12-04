@@ -45,12 +45,6 @@ const Home = () => {
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    if (latestReviews?.data.length) {
-      setActiveLatestReviewCard(latestReviews.data[0]);
-    }
-  }, [latestReviews]);
-
   if (isLoadingLatestReviews || isLoadingReviews) {
     return (
       <SafeAreaView className="h-full bg-black">

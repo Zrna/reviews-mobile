@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import { Toast } from "toastify-react-native";
 import { z } from "zod";
 
 import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
@@ -30,24 +29,23 @@ const Create = () => {
     setValue,
   } = useForm<CreateReview>({ resolver: zodResolver(CreateSchema) });
 
-  const { mutateAsync: createReview, isSuccess } = useCreateReview();
-
+  const { mutateAsync: createReview } = useCreateReview();
   const safeAreaInsets = useSafeAreaInsets();
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("/home");
-      reset();
-      Toast.success("Review created");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
 
   useEffect(() => {
     if (name) {
       setValue("name", name as string);
     }
   }, [name, setValue]);
+
+  const handleCreate = async (data: CreateReview) => {
+    Keyboard.dismiss();
+    try {
+      await createReview(data);
+      router.push("/home");
+      reset();
+    } catch {}
+  };
 
   return (
     <KeyboardAvoidingView
@@ -81,7 +79,7 @@ const Create = () => {
               <WatchAgain control={control} />
               <CustomInput control={control} name="review" label="Your Review" componentType="textarea" />
               <CustomButton
-                onPress={handleSubmit(async (data) => (Keyboard.dismiss(), await createReview(data)))}
+                onPress={handleSubmit(handleCreate)}
                 isFullWidth
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}

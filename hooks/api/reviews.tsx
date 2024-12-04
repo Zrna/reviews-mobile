@@ -47,9 +47,10 @@ export const useCreateReview = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
+      Toast.success("Review created");
     },
     onError: (error) => {
-      Alert.alert("", getErrorMessage(error));
+      Toast.error(getErrorMessage(error));
       throw error;
     },
   });

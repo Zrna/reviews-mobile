@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -24,6 +24,7 @@ import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
 import { Indicator, Navbar, StreamingApp } from "@/components/screens/review";
 import { useDeleteReview, useReviewById, useUpdateReview } from "@/hooks/api/reviews";
 import { UpdateReview } from "@/interfaces/reviews";
+import { getErrorMessage } from "@/utils/error";
 import { reactionsMap } from "@/utils/review";
 import { getUrlDomain } from "@/utils/url";
 
@@ -37,7 +38,7 @@ const UpdateSchema = z.object({
 const ReviewScreen = () => {
   const { id } = useLocalSearchParams();
   const { data: review, isLoading, refetch: refetchReview, isRefetching } = useReviewById(id as string);
-  const { mutateAsync: updateReview, isPending: isUpdating, isSuccess: isReviewUpdated } = useUpdateReview();
+  const { mutateAsync: updateReview, isPending: isUpdating } = useUpdateReview();
   const { mutateAsync: deleteReview, isPending: isDeleting } = useDeleteReview();
 
   const {
@@ -52,14 +53,6 @@ const ReviewScreen = () => {
   });
 
   const [isEditMode, setIsEditMode] = useState(false);
-
-  useEffect(() => {
-    if (isReviewUpdated) {
-      setIsEditMode(false);
-      reset();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReviewUpdated]);
 
   // handle if user is not authorized to view the review
 
@@ -91,7 +84,12 @@ const ReviewScreen = () => {
 
   const handleSave = async (data: UpdateReview) => {
     if (isDirty) {
-      await updateReview({ id: review.id.toString(), data });
+      try {
+        await updateReview({ id: review.id.toString(), data });
+        setIsEditMode(false);
+      } catch (error) {
+        Toast.error(getErrorMessage(error));
+      }
     } else {
       setIsEditMode(false);
     }
