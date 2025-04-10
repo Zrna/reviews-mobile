@@ -16,7 +16,7 @@ interface TabIconProps {
 }
 
 const TabIcon: React.FC<TabIconProps> = ({ color, IconComponent, focused }) => {
-  return <IconComponent stroke={color} strokeWidth={focused ? 3 : 2} width={28} height={28} />;
+  return <IconComponent stroke={color} strokeWidth={focused ? 3 : 2} width={24} height={24} />;
 };
 
 const ProtectedLayout = () => {
@@ -24,15 +24,29 @@ const ProtectedLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveBackgroundColor: "#0E0E0E", // theme dark color
-        tabBarInactiveBackgroundColor: "#0E0E0E", // theme dark color
+        tabBarActiveBackgroundColor: "#0E0E0E",
+        tabBarInactiveBackgroundColor: "#0E0E0E",
         tabBarInactiveTintColor: "#d9d9d9",
         tabBarActiveTintColor: "white",
-        tabBarShowLabel: false, // show or hide the tab labels
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "500",
+          marginBottom: 0,
+          marginTop: 2,
+        },
         tabBarStyle: {
-          backgroundColor: "#0E0E0E", // theme dark color
+          backgroundColor: "#0E0E0E",
           borderTopWidth: 0.2,
           borderTopColor: "#A1A1A1",
+          height: 65,
+          paddingBottom: 4,
+          paddingTop: 4,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 0,
+          justifyContent: "center",
+          alignItems: "center",
         },
         tabBarHideOnKeyboard: true,
       }}
