@@ -3,7 +3,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 
 import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
@@ -30,7 +30,6 @@ const Create = () => {
   } = useForm<CreateReview>({ resolver: zodResolver(CreateSchema) });
 
   const { mutateAsync: createReview } = useCreateReview();
-  const safeAreaInsets = useSafeAreaInsets();
 
   useEffect(() => {
     if (name) {
@@ -44,20 +43,18 @@ const Create = () => {
       await createReview(data);
       router.push("/home");
       reset();
-    } catch {}
+    } catch {
+      // Error is already handled by the useCreateReview hook showing a toast
+    }
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ android: undefined, ios: "padding" })}
-      keyboardVerticalOffset={-200}
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
+      style={{ flex: 1 }}
     >
-      <SafeAreaView
-        className="bg-black"
-        style={{
-          paddingBottom: -safeAreaInsets.bottom, // fixes the SafeAreaView padding issue on tab bar
-        }}
-      >
+      <SafeAreaView className="flex-1 bg-black" edges={["top", "left", "right"]}>
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -69,8 +66,12 @@ const Create = () => {
           }
           automaticallyAdjustKeyboardInsets
           keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: Platform.select({ ios: 16, android: 12 }),
+          }}
         >
-          <View className="w-full p-4 pt-8 space-y-8">
+          <View className="w-full p-4 pt-8 space-y-8 pb-2">
             <Text className="text-white font-pop-bold text-xl">Create a review</Text>
             <View>
               <CustomInput control={control} name="name" label="Movie/TV show name" />

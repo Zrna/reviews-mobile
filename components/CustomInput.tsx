@@ -55,10 +55,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
                   multiline={isTextArea}
                   numberOfLines={isTextArea ? 9 : 1}
                   textAlignVertical={isTextArea ? "top" : "center"}
+                  accessibilityLabel={label || name}
+                  accessibilityHint={error ? error.message : undefined}
+                  accessibilityRole="text"
                   {...props}
                 />
                 {secureTextEntry && (
-                  <TouchableOpacity onPress={() => setShowIsValueHidden(!isValueHidden)}>
+                  <TouchableOpacity
+                    onPress={() => setShowIsValueHidden(!isValueHidden)}
+                    accessibilityLabel={isValueHidden ? "Show password" : "Hide password"}
+                    accessibilityRole="button"
+                  >
                     {isValueHidden ? (
                       <Eye color="#D0D0D0" width={20} height={20} />
                     ) : (
@@ -67,7 +74,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                   </TouchableOpacity>
                 )}
                 {onClear && props.value && (
-                  <TouchableOpacity onPress={onClear}>
+                  <TouchableOpacity onPress={onClear} accessibilityLabel="Clear input" accessibilityRole="button">
                     <X color="#D0D0D0" width={24} height={24} />
                   </TouchableOpacity>
                 )}

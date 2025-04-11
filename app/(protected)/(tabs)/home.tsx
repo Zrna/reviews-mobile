@@ -1,6 +1,6 @@
 import { router, useNavigation } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View, ViewToken } from "react-native";
 import { Plus } from "react-native-feather";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -26,11 +26,15 @@ const Home = () => {
   const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const viewableItemsChanged = ({ viewableItems }: { viewableItems: any[] }) => {
-    if (viewableItems.length > 0) {
-      setActiveLatestReviewCard(viewableItems[0].item);
+  const viewableItemsChanged = React.useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    if (viewableItems.length > 0 && viewableItems[0].item) {
+      const newReview = viewableItems[0].item as Review;
+      setActiveLatestReviewCard((prev) => {
+        if (prev?.id === newReview.id) return prev;
+        return newReview;
+      });
     }
-  };
+  }, []);
 
   const handleRefresh = async () => {
     await refetchLatestReviews();
@@ -93,12 +97,19 @@ const Home = () => {
                 horizontal
                 viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
                 contentOffset={{ x: 0, y: 0 }}
+                initialNumToRender={3}
+                maxToRenderPerBatch={3}
+                windowSize={5}
+                removeClippedSubviews={true}
                 ListFooterComponent={
                   <TouchableOpacity
                     activeOpacity={0.7}
                     className="w-[200px] h-[300px] flex-row space-x-1 p-6 justify-center items-center ml-2"
                     onPress={() => router.push("/create")}
                     style={{ borderWidth: 3, borderStyle: "dashed", borderColor: "#23C06B", borderRadius: 6 }}
+                    accessibilityLabel="Create new review"
+                    accessibilityHint="Tap to create a new review"
+                    accessibilityRole="button"
                   >
                     <Image source={cowWithCup} className="w-[150px] h-[150px] absolute bottom-[-70px] right-0 flex-1" />
                     <Plus stroke="white" width={20} height={20} />
@@ -122,6 +133,10 @@ const Home = () => {
                   ItemSeparatorComponent={() => <View className="w-2" />}
                   showsHorizontalScrollIndicator={false}
                   horizontal
+                  initialNumToRender={3}
+                  maxToRenderPerBatch={3}
+                  windowSize={5}
+                  removeClippedSubviews={true}
                 />
               </FlatListWrapper>
             ))}
