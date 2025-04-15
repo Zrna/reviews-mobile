@@ -29,7 +29,7 @@ const Search = () => {
         placeholder="Search movies, shows..."
         name="search"
         onClear={() => setSearch("")}
-        Icon={<SearchIcon stroke="rgba(255,255,255,0.4)" width={28} height={28} />}
+        Icon={<SearchIcon stroke="rgba(255,255,255,1)" width={28} height={28} />}
         autoFocus
         value={search}
         onChangeText={setSearch}
@@ -58,7 +58,7 @@ const Search = () => {
               renderItem={({ item }) => <ReviewCard review={item} />}
               numColumns={3}
               scrollEnabled={false}
-              contentContainerStyle={{ gap: 12 }}
+              contentContainerStyle={{ gap: 18 }}
               columnWrapperStyle={{ gap: 12 }}
               ListFooterComponent={<View className="h-10" />} // To add space at the bottom
               ListEmptyComponent={
