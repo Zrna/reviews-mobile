@@ -1,5 +1,5 @@
-import { router, useNavigation } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import { router } from "expo-router";
+import React, { useRef, useState } from "react";
 import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View, ViewToken } from "react-native";
 import { Plus } from "react-native-feather";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,7 +13,6 @@ import { Review } from "@/interfaces/reviews";
 import { getRatingTitle } from "@/utils/ratingTitles";
 
 const Home = () => {
-  const navigation = useNavigation();
   const safeAreaInsets = useSafeAreaInsets();
 
   const { data: latestReviews, refetch: refetchLatestReviews, isLoading: isLoadingLatestReviews } = useLatestReviews();
@@ -41,14 +40,6 @@ const Home = () => {
     await refetchLatestReviews();
     await refetchReviews();
   };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      scrollViewRef.current?.scrollTo({ y: 0 });
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   if (isLoadingLatestReviews || isLoadingReviews) {
     return (
