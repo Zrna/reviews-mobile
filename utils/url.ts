@@ -1,6 +1,7 @@
 export function getUrlDomain(url: string | URL) {
   try {
-    const urlObject = new URL(url);
+    const urlWithProtocol = typeof url === "string" ? addUrlProtocol(url) : url;
+    const urlObject = new URL(urlWithProtocol);
     let domain = urlObject.hostname.replace(/^www\./, "");
 
     // Split domain into parts
