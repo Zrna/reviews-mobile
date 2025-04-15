@@ -1,8 +1,11 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Home, PlusSquare, Search, User } from "react-native-feather";
+import { Text, View } from "react-native";
+import { Home, PlusSquare, Search } from "react-native-feather";
 
 import { BackButton } from "@/components";
+import { useAccount } from "@/hooks/api/account";
+import { getUserInitials } from "@/utils/user";
 
 interface TabIconProps {
   color: string;
@@ -20,6 +23,8 @@ const TabIcon: React.FC<TabIconProps> = ({ color, IconComponent, focused }) => {
 };
 
 const ProtectedLayout = () => {
+  const { data: account } = useAccount();
+
   return (
     <Tabs
       screenOptions={{
@@ -85,7 +90,28 @@ const ProtectedLayout = () => {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={User} />,
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: focused ? "#00C774" : "#333",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: 12,
+                }}
+              >
+                {account ? getUserInitials(account.firstName, account.lastName) : ""}
+              </Text>
+            </View>
+          ),
         }}
       />
     </Tabs>
