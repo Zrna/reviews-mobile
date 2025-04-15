@@ -10,6 +10,7 @@ import { CustomButton, FlatListWrapper, ReviewCard } from "@/components";
 import { LatestReviewCard, Navbar, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";
 import { Review } from "@/interfaces/reviews";
+import { getRatingTitle } from "@/utils/ratingTitles";
 
 const Home = () => {
   const navigation = useNavigation();
@@ -85,7 +86,7 @@ const Home = () => {
           </View>
         ) : (
           <>
-            <FlatListWrapper title="Your Latest" class="mt-5">
+            <FlatListWrapper title="Your Latest" class="mt-5" isBigTitle>
               <FlatList
                 data={latestReviews?.data}
                 keyExtractor={(review) => review.id.toString()}
@@ -120,7 +121,7 @@ const Home = () => {
             </FlatListWrapper>
             {reviews?.map(({ rating, reviews }) => (
               <FlatListWrapper
-                title={rating ? `${rating}-Star Reviews` : "Not rated"}
+                title={getRatingTitle(rating)}
                 class={`mt-6 ${rating === null && "mb-10"}`}
                 key={`${rating}-star-reviews-section`}
                 onPress={reviews.length ? () => router.push(`/reviews/grouped-by-rating/${rating || 0}`) : undefined}
