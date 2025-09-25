@@ -76,8 +76,8 @@ const Home = () => {
             <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
           </View>
         ) : (
-          <>
-            <FlatListWrapper title="Your Latest" class="mt-5" isBigTitle>
+          <View>
+            <FlatListWrapper title="Your Latest" isBigTitle>
               <FlatList
                 data={latestReviews?.data}
                 keyExtractor={(review) => review.id.toString()}
@@ -132,7 +132,7 @@ const Home = () => {
                 />
               </FlatListWrapper>
             ))}
-          </>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
