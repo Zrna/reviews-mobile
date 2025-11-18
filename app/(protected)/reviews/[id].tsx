@@ -24,6 +24,7 @@ import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
 import { Indicator, Navbar, StreamingApp } from "@/components/screens/review";
 import { useDeleteReview, useReviewById, useUpdateReview } from "@/hooks/api/reviews";
 import { UpdateReview } from "@/interfaces/reviews";
+import { formatDate } from "@/utils/date";
 import { getErrorMessage } from "@/utils/error";
 import { reactionsMap } from "@/utils/review";
 import { getUrlDomain } from "@/utils/url";
@@ -222,6 +223,7 @@ const ReviewScreen = () => {
               <Text className="text-white text-xl">{review.review}</Text>
             </>
           )}
+          <Text className="text-dimmed text-xs italic pt-6">Added on {formatDate(review.createdAt)}</Text>
         </View>
       </ScrollView>
       {(isDeleting || isUpdating || isSubmittingUpdate) && (
