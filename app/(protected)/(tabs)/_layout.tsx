@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import { Home, PlusSquare, Search } from "react-native-feather";
 
 import { BackButton } from "@/components";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { useAccount } from "@/hooks/api/account";
 import { getUserInitials } from "@/utils/user";
 
@@ -23,7 +24,8 @@ const TabIcon: React.FC<TabIconProps> = ({ color, IconComponent, focused }) => {
 };
 
 const ProtectedLayout = () => {
-  const { data: account } = useAccount();
+  const { authState } = useAuthContext();
+  const { data: account } = useAccount({ enabled: authState.isLoggedIn });
 
   return (
     <Tabs

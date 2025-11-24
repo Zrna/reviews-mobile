@@ -20,8 +20,8 @@ const ProfileFormSchema = RegisterFormSchema.pick({
 });
 
 const Profile = () => {
-  const { onLogout } = useAuthContext();
-  const { data: account, isLoading: isLoadingUser } = useAccount();
+  const { onLogout, authState } = useAuthContext();
+  const { data: account, isLoading: isLoadingUser } = useAccount({ enabled: authState.isLoggedIn });
   const { mutateAsync: updateAccount } = useUpdateAccount();
   const {
     control,

@@ -1,17 +1,15 @@
-import { CommonActions } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";
 
 import { login as loginRequest, logout as logoutRequest, register as registerRequest } from "@/apis/auth";
 import { LoginProps, RegisterProps } from "@/interfaces/auth";
+import { ACCESS_TOKEN, setTokenRefreshCallback } from "@/services/backend";
 import { sleep } from "@/utils/async";
 import { getErrorMessage } from "@/utils/error";
-
-export const TOKEN_KEY = "accessToken";
 
 interface AuthContextProps {
   authState: {
@@ -31,8 +29,8 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const navigation = useNavigation();
   const queryClient = useQueryClient();
+  const isLoggingOut = useRef(false);
 
   const [authState, setAuthState] = useState<AuthContextProps["authState"]>({
     accessToken: undefined,
@@ -46,7 +44,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setAuthState({ accessToken: res.accessToken, isLoggedIn: true });
       axios.defaults.headers.common["Authorization"] = `Bearer ${res.accessToken}`;
-      await SecureStore.setItemAsync(TOKEN_KEY, res.accessToken);
+      await SecureStore.setItemAsync(ACCESS_TOKEN, res.accessToken);
 
       router.replace("/home");
       return res;
@@ -62,7 +60,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setAuthState({ accessToken: res.accessToken, isLoggedIn: true });
       axios.defaults.headers.common["Authorization"] = `Bearer ${res.accessToken}`;
-      await SecureStore.setItemAsync(TOKEN_KEY, res.accessToken);
+      await SecureStore.setItemAsync(ACCESS_TOKEN, res.accessToken);
 
       router.replace("/home");
       return res;
@@ -72,28 +70,59 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
+    // Prevent multiple simultaneous logout calls
+    if (isLoggingOut.current) {
+      console.log("⏭️ Logout already in progress, skipping...");
+      return;
+    }
+
+    isLoggingOut.current = true;
+    console.log("🔒 Logging out");
+
     try {
-      await logoutRequest();
-      await SecureStore.deleteItemAsync(TOKEN_KEY);
+      // Mobile uses Bearer tokens, not cookies, so logout API doesn't do anything
+      // But we call it anyway in case backend logic changes in the future
+      await logoutRequest().catch(() => {
+        // Ignore errors - token might be expired, but we're logging out anyway
+      });
+    } catch {
+      // Ignore any errors
+    } finally {
+      // Always perform local cleanup regardless of API call result
+      await SecureStore.deleteItemAsync(ACCESS_TOKEN);
       queryClient.removeQueries();
       queryClient.clear();
       axios.defaults.headers.common["Authorization"] = undefined;
       setAuthState({ accessToken: undefined, isLoggedIn: false });
 
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "index" }],
-        }),
-      );
-    } catch (error) {
-      Alert.alert("", getErrorMessage(error));
+      // Dismiss all modals and clear navigation stack, then navigate to login
+      router.dismissAll();
+      router.replace("/");
+
+      // Reset the flag after a delay to allow navigation to complete
+      setTimeout(() => {
+        isLoggingOut.current = false;
+      }, 1000);
+    }
+  };
+
+  // Handle token refresh from backend service
+  const handleTokenRefresh = (newToken: string | null) => {
+    if (!newToken) {
+      // Token expired - logout user
+      logout();
+    } else {
+      // Update auth state with new token
+      setAuthState({ accessToken: newToken, isLoggedIn: true });
     }
   };
 
   useEffect(() => {
+    // Set up token refresh callback
+    setTokenRefreshCallback(handleTokenRefresh);
+
     const loadToken = async () => {
-      const token = await SecureStore.getItemAsync(TOKEN_KEY);
+      const token = await SecureStore.getItemAsync(ACCESS_TOKEN);
 
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

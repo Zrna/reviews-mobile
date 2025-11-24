@@ -5,10 +5,15 @@ import { Toast } from "toastify-react-native";
 import { getAccountData, updateAccount } from "@/apis/account";
 import { getErrorMessage } from "@/utils/error";
 
-export const useAccount = () => {
+type UseAccountProps = {
+  enabled?: boolean;
+};
+
+export const useAccount = (props?: UseAccountProps) => {
   return useQuery({
     queryKey: ["account"],
     queryFn: getAccountData,
+    enabled: props?.enabled ?? true,
   });
 };
 
