@@ -39,9 +39,15 @@ export const getReviewsGroupedByRatings = async ({
   const ratingParam = typeof rating === "number" ? `/${rating}` : "";
   const query = typeof count === "number" ? `?count=${count}` : "";
 
-  return await backend.get(`/api/reviews/grouped-by-ratings${ratingParam}${query}`, {
-    params: {
-      count,
+  const response = await backend.get<ReviewsGroupedByRatings | ReviewsGroupedByRatings[number]>(
+    `/api/reviews/grouped-by-ratings${ratingParam}${query}`,
+    {
+      params: {
+        count,
+      },
     },
-  });
+  );
+
+  // When a specific rating is requested, the API returns a single object, not an array
+  return Array.isArray(response) ? response : [response];
 };

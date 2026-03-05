@@ -70,7 +70,7 @@ const Home = () => {
         }
       >
         <Navbar />
-        {!latestReviews?.data.length && reviews?.every((group) => group.reviews.length === 0) ? (
+        {!latestReviews?.data.length && reviews?.every((group) => group.data.length === 0) ? (
           <View className="space-y-5 h-[80vh] justify-center">
             <Image className="w-auto h-auto self-center" source={cowImg} />
             <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
@@ -110,7 +110,7 @@ const Home = () => {
                 }
               />
             </FlatListWrapper>
-            {reviews?.map(({ rating, reviews }) => (
+            {reviews?.map(({ rating, data }) => (
               <FlatListWrapper
                 title={getRatingTitle(rating)}
                 class={`mt-6 ${rating === null && "mb-10"}`}
@@ -118,7 +118,7 @@ const Home = () => {
                 onPress={reviews.length ? () => router.push(`/reviews/grouped-by-rating/${rating || 0}`) : undefined}
               >
                 <FlatList
-                  data={reviews}
+                  data={data}
                   keyExtractor={(review) => review.id.toString()}
                   renderItem={({ item }) => <ReviewCard review={item} />}
                   ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}

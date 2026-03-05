@@ -61,10 +61,10 @@ const ReviewGroupedByRatingScreen = () => {
           </View>
         ) : (
           <>
-            {groupedReviews?.map(({ rating, reviews }) => (
+            {groupedReviews?.map(({ rating, data }) => (
               <FlatList
                 key={`${rating}-star-reviews-section`}
-                data={reviews}
+                data={data}
                 renderItem={({ item }) => <ReviewCard review={item} />}
                 numColumns={3}
                 scrollEnabled={false}

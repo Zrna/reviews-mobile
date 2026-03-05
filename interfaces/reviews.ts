@@ -41,5 +41,5 @@ export interface GetReviewsGroupedByRatingsParams {
 
 export type ReviewsGroupedByRatings = {
   rating: number;
-  reviews: Review[];
+  data: Review[];
 }[];
