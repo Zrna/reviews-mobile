@@ -34,12 +34,23 @@ export interface UpdateReview {
   watchAgain: boolean;
 }
 
-export interface GetReviewsGroupedByRatingsParams {
-  count?: number;
-  rating?: number;
-}
-
 export type ReviewsGroupedByRatings = {
   rating: number;
   data: Review[];
+  totalRecords: number;
 }[];
+
+export interface GetReviewsByRatingParams {
+  rating: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface ReviewsByRating {
+  rating: number;
+  data: Review[];
+  totalRecords: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}

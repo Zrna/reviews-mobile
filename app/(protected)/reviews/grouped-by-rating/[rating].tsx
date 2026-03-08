@@ -7,23 +7,21 @@ import { Toast } from "toastify-react-native";
 import cowImg from "@/assets/images/cow/cow.png";
 import { CustomButton } from "@/components";
 import ReviewCard from "@/components/ReviewCard";
-import { useReviewsGroupedByRatings } from "@/hooks/api/reviews";
+import { useReviewsByRating } from "@/hooks/api/reviews";
 
 const ReviewGroupedByRatingScreen = () => {
   const navigation = useNavigation();
   const { rating } = useLocalSearchParams();
 
   // TODO: implement infinite scroll using react-query's useInfiniteQuery
+  const parsedRating = parseInt(rating as string);
   const {
-    data: groupedReviews,
+    data: reviewsByRating,
     isLoading,
     refetch,
     isRefetching,
     isError,
-  } = useReviewsGroupedByRatings({
-    count: 18,
-    rating: rating ? parseInt(rating as string) : undefined,
-  });
+  } = useReviewsByRating({ rating: parsedRating });
 
   useEffect(() => {
     if (rating) {
@@ -61,24 +59,22 @@ const ReviewGroupedByRatingScreen = () => {
           </View>
         ) : (
           <>
-            {groupedReviews?.map(({ rating, data }) => (
-              <FlatList
-                key={`${rating}-star-reviews-section`}
-                data={data}
-                renderItem={({ item }) => <ReviewCard review={item} />}
-                numColumns={3}
-                scrollEnabled={false}
-                contentContainerStyle={{ gap: 12 }}
-                columnWrapperStyle={{ gap: 12 }}
-                ListFooterComponent={<View className="h-10" />} // To add space at the bottom
-                ListEmptyComponent={
-                  <View className="space-y-5 h-[80vh] justify-center">
-                    <Image className="w-auto h-auto self-center" source={cowImg} />
-                    <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
-                  </View>
-                }
-              />
-            ))}
+            <FlatList
+              data={reviewsByRating?.data}
+              keyExtractor={(review) => review.id.toString()}
+              renderItem={({ item }) => <ReviewCard review={item} />}
+              numColumns={3}
+              scrollEnabled={false}
+              contentContainerStyle={{ gap: 12 }}
+              columnWrapperStyle={{ gap: 12 }}
+              ListFooterComponent={<View className="h-10" />}
+              ListEmptyComponent={
+                <View className="space-y-5 h-[80vh] justify-center">
+                  <Image className="w-auto h-auto self-center" source={cowImg} />
+                  <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
+                </View>
+              }
+            />
           </>
         )}
       </ScrollView>

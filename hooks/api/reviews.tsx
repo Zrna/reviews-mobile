@@ -9,10 +9,11 @@ import {
   getLatestReviews,
   getReviewById,
   getReviews,
-  getReviewsGroupedByRatings as getReviewsGroupedByRatingsApi,
+  getReviewsByRating,
+  getReviewsGroupedByRatings,
   updateReviewById,
 } from "@/apis/reviews";
-import { CreateReview, GetReviewsGroupedByRatingsParams, UpdateReview } from "@/interfaces/reviews";
+import { CreateReview, GetReviewsByRatingParams, UpdateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
 export function useReviews() {
@@ -46,6 +47,7 @@ export const useCreateReview = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviewsByRating"] });
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
       Toast.success("Review created");
     },
@@ -83,6 +85,7 @@ export const useDeleteReview = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviewsByRating"] });
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
       router.push("/home");
       Toast.success("Review deleted");
@@ -94,11 +97,17 @@ export const useDeleteReview = () => {
   });
 };
 
-export const useReviewsGroupedByRatings = (options?: GetReviewsGroupedByRatingsParams) => {
-  const { count = 10, rating = undefined } = options || {};
-
+export const useReviewsGroupedByRatings = () => {
   return useQuery({
-    queryKey: ["reviewsGroupedByRatings", count, rating],
-    queryFn: () => getReviewsGroupedByRatingsApi({ count, rating }),
+    queryKey: ["reviewsGroupedByRatings"],
+    queryFn: getReviewsGroupedByRatings,
+  });
+};
+
+export const useReviewsByRating = ({ rating, page, pageSize }: GetReviewsByRatingParams) => {
+  return useQuery({
+    queryKey: ["reviewsByRating", rating, page, pageSize],
+    queryFn: () => getReviewsByRating({ rating, page, pageSize }),
+    enabled: rating !== undefined,
   });
 };

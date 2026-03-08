@@ -1,8 +1,9 @@
 import {
   CreateReview,
-  GetReviewsGroupedByRatingsParams,
+  GetReviewsByRatingParams,
   Review,
   Reviews,
+  ReviewsByRating,
   ReviewsGroupedByRatings,
   UpdateReview,
 } from "@/interfaces/reviews";
@@ -32,22 +33,19 @@ export const getReviewById = async (id: string): Promise<Review> => {
   return await backend.get(`/api/reviews/${id}`);
 };
 
-export const getReviewsGroupedByRatings = async ({
-  count,
+export const getReviewsGroupedByRatings = async (): Promise<ReviewsGroupedByRatings> => {
+  return await backend.get("/api/reviews/grouped-by-ratings");
+};
+
+export const getReviewsByRating = async ({
   rating,
-}: GetReviewsGroupedByRatingsParams): Promise<ReviewsGroupedByRatings> => {
-  const ratingParam = typeof rating === "number" ? `/${rating}` : "";
-  const query = typeof count === "number" ? `?count=${count}` : "";
-
-  const response = await backend.get<ReviewsGroupedByRatings | ReviewsGroupedByRatings[number]>(
-    `/api/reviews/grouped-by-ratings${ratingParam}${query}`,
-    {
-      params: {
-        count,
-      },
+  page,
+  pageSize,
+}: GetReviewsByRatingParams): Promise<ReviewsByRating> => {
+  return await backend.get(`/api/reviews/rating/${rating}`, {
+    params: {
+      ...(page !== undefined && { page }),
+      ...(pageSize !== undefined && { pageSize }),
     },
-  );
-
-  // When a specific rating is requested, the API returns a single object, not an array
-  return Array.isArray(response) ? response : [response];
+  });
 };
