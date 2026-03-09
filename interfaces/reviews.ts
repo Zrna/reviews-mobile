@@ -14,9 +14,19 @@ export interface Review {
   updatedAt: string;
 }
 
+export interface GetReviewsParams {
+  page?: number;
+  pageSize?: number;
+}
+
 export interface Reviews {
   data: Review[];
   totalRecords: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }
 
 export interface CreateReview {
@@ -53,4 +63,6 @@ export interface ReviewsByRating {
   page: number;
   pageSize: number;
   totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }

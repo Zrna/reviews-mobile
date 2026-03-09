@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import React, { useEffect } from "react";
-import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { ActivityIndicator, FlatList, Image, RefreshControl, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
 
@@ -13,15 +13,9 @@ const ReviewGroupedByRatingScreen = () => {
   const navigation = useNavigation();
   const { rating } = useLocalSearchParams();
 
-  // TODO: implement infinite scroll using react-query's useInfiniteQuery
   const parsedRating = parseInt(rating as string);
-  const {
-    data: reviewsByRating,
-    isLoading,
-    refetch,
-    isRefetching,
-    isError,
-  } = useReviewsByRating({ rating: parsedRating });
+  const { data, isLoading, refetch, isRefetching, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useReviewsByRating({ rating: parsedRating });
 
   useEffect(() => {
     if (rating) {
@@ -40,44 +34,47 @@ const ReviewGroupedByRatingScreen = () => {
     }
   }, [isError, navigation]);
 
+  const reviews = data?.pages.flatMap((page) => page.data) ?? [];
+
+  const onEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <SafeAreaView className="h-full justify-center items-center bg-black px-3.5 pb-1">
-      <ScrollView
-        className="w-full"
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={refetch}
-            tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
-            colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
-          />
-        }
-      >
-        {isLoading ? (
-          <View className="h-[90%]">
-            <ActivityIndicator color="white" />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={reviewsByRating?.data}
-              keyExtractor={(review) => review.id.toString()}
-              renderItem={({ item }) => <ReviewCard review={item} />}
-              numColumns={3}
-              scrollEnabled={false}
-              contentContainerStyle={{ gap: 12 }}
-              columnWrapperStyle={{ gap: 12 }}
-              ListFooterComponent={<View className="h-10" />}
-              ListEmptyComponent={
-                <View className="space-y-5 h-[80vh] justify-center">
-                  <Image className="w-auto h-auto self-center" source={cowImg} />
-                  <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
-                </View>
-              }
+      {isLoading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <FlatList
+          data={reviews}
+          keyExtractor={(review) => review.id.toString()}
+          renderItem={({ item }) => <ReviewCard review={item} />}
+          numColumns={3}
+          contentContainerStyle={{ gap: 12 }}
+          columnWrapperStyle={{ gap: 12 }}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator color="white" className="py-4" /> : <View className="h-10" />
+          }
+          ListEmptyComponent={
+            <View className="space-y-5 h-[80vh] justify-center">
+              <Image className="w-auto h-auto self-center" source={cowImg} />
+              <CustomButton text="Create a review" onPress={() => router.push("/create")} class="mt-10" />
+            </View>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
+              colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
             />
-          </>
-        )}
-      </ScrollView>
+          }
+        />
+      )}
     </SafeAreaView>
   );
 };

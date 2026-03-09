@@ -1,6 +1,7 @@
 import {
   CreateReview,
   GetReviewsByRatingParams,
+  GetReviewsParams,
   Review,
   Reviews,
   ReviewsByRating,
@@ -21,8 +22,13 @@ export const deleteReviewById = async (id: string): Promise<true> => {
   return await backend.delete(`/api/reviews/${id}`);
 };
 
-export const getReviews = async (): Promise<Reviews> => {
-  return await backend.get("/api/reviews");
+export const getReviews = async ({ page, pageSize }: GetReviewsParams = {}): Promise<Reviews> => {
+  return await backend.get("/api/reviews", {
+    params: {
+      ...(page !== undefined && { page }),
+      ...(pageSize !== undefined && { pageSize }),
+    },
+  });
 };
 
 export const getLatestReviews = async (): Promise<Reviews> => {

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 import { Toast } from "toastify-react-native";
@@ -13,13 +13,15 @@ import {
   getReviewsGroupedByRatings,
   updateReviewById,
 } from "@/apis/reviews";
-import { CreateReview, GetReviewsByRatingParams, UpdateReview } from "@/interfaces/reviews";
+import { CreateReview, GetReviewsByRatingParams, GetReviewsParams, UpdateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
-export function useReviews() {
-  return useQuery({
-    queryKey: ["reviews"],
-    queryFn: getReviews,
+export function useReviews({ pageSize }: Omit<GetReviewsParams, "page"> = {}) {
+  return useInfiniteQuery({
+    queryKey: ["reviews", pageSize],
+    queryFn: ({ pageParam }) => getReviews({ page: pageParam, pageSize }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.page + 1 : undefined),
   });
 }
 
@@ -104,10 +106,12 @@ export const useReviewsGroupedByRatings = () => {
   });
 };
 
-export const useReviewsByRating = ({ rating, page, pageSize }: GetReviewsByRatingParams) => {
-  return useQuery({
-    queryKey: ["reviewsByRating", rating, page, pageSize],
-    queryFn: () => getReviewsByRating({ rating, page, pageSize }),
+export const useReviewsByRating = ({ rating, pageSize }: Omit<GetReviewsByRatingParams, "page">) => {
+  return useInfiniteQuery({
+    queryKey: ["reviewsByRating", rating, pageSize],
+    queryFn: ({ pageParam }) => getReviewsByRating({ rating, page: pageParam, pageSize }),
     enabled: rating !== undefined,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.page + 1 : undefined),
   });
 };

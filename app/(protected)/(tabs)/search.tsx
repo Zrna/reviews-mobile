@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, RefreshControl, Text, View } from "react-native";
 import { Search as SearchIcon } from "react-native-feather";
 
 import cowImg from "@/assets/images/cow/cow.png";
@@ -12,12 +12,16 @@ import { useReviews } from "@/hooks/api/reviews";
 const Search = () => {
   const { control } = useForm();
   const {
-    data: reviews,
+    data,
     isLoading: isLoadingReviews,
     refetch: refetchReviews,
     isRefetching: isRefetchingReviews,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useReviews();
 
+  const reviews = data?.pages.flatMap((page) => page.data) ?? [];
   const [search, setSearch] = useState("");
 
   return (
@@ -35,54 +39,53 @@ const Search = () => {
         onChangeText={setSearch}
         containerClassName="mt-3"
       />
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        className="w-full"
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetchingReviews}
-            onRefresh={refetchReviews}
-            tintColor="#9ae2bb" // green-200 - refresh icon color on iOS
-            colors={["#23C06B"]} // green-500/primary - refresh icon color on Android
-          />
-        }
-      >
-        {isLoadingReviews ? (
-          <View className="h-[90%]">
-            <ActivityIndicator color="white" />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={reviews?.data?.filter((review) => review.name.toLowerCase().includes(search.toLowerCase()))}
-              renderItem={({ item }) => <ReviewCard review={item} />}
-              numColumns={3}
-              scrollEnabled={false}
-              contentContainerStyle={{ gap: 18 }}
-              columnWrapperStyle={{ gap: 12 }}
-              ListFooterComponent={<View className="h-10" />} // To add space at the bottom
-              ListEmptyComponent={
-                <View className="space-y-5">
-                  <Text className="text-dimmed self-center">No Reviews Found</Text>
-                  <Image className="w-auto h-auto self-center" source={cowImg} />
-                  <CustomButton
-                    text={search ? `Add review for ${search}` : "Create a review"}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/create",
-                        params: {
-                          name: search,
-                        },
-                      })
-                    }
-                    class="mt-10"
-                  />
-                </View>
-              }
+      {isLoadingReviews ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <FlatList
+          keyboardShouldPersistTaps="handled"
+          data={reviews.filter((review) => review.name.toLowerCase().includes(search.toLowerCase()))}
+          renderItem={({ item }) => <ReviewCard review={item} />}
+          numColumns={3}
+          contentContainerStyle={{ gap: 18 }}
+          columnWrapperStyle={{ gap: 12 }}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator color="white" className="py-4" /> : <View className="h-10" />
+          }
+          ListEmptyComponent={
+            <View className="space-y-5">
+              <Text className="text-dimmed self-center">No Reviews Found</Text>
+              <Image className="w-auto h-auto self-center" source={cowImg} />
+              <CustomButton
+                text={search ? `Add review for ${search}` : "Create a review"}
+                onPress={() =>
+                  router.push({
+                    pathname: "/create",
+                    params: {
+                      name: search,
+                    },
+                  })
+                }
+                class="mt-10"
+              />
+            </View>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetchingReviews}
+              onRefresh={refetchReviews}
+              tintColor="#9ae2bb"
+              colors={["#23C06B"]}
             />
-          </>
-        )}
-      </ScrollView>
+          }
+        />
+      )}
     </View>
   );
 };
