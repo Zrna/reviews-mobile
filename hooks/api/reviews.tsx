@@ -13,10 +13,11 @@ import {
   getReviewsGroupedByRatings,
   updateReviewById,
 } from "@/apis/reviews";
-import { CreateReview, GetReviewsByRatingParams, GetReviewsParams, UpdateReview } from "@/interfaces/reviews";
+import { PaginationUrlParams } from "@/interfaces/common";
+import { CreateReview, GetReviewsByRatingParams, UpdateReview } from "@/interfaces/reviews";
 import { getErrorMessage } from "@/utils/error";
 
-export function useReviews({ pageSize }: Omit<GetReviewsParams, "page"> = {}) {
+export function useReviews({ pageSize }: Omit<PaginationUrlParams, "page"> = {}) {
   return useInfiniteQuery({
     queryKey: ["reviews", pageSize],
     queryFn: ({ pageParam }) => getReviews({ page: pageParam, pageSize }),

@@ -1,7 +1,7 @@
+import { PaginationUrlParams } from "@/interfaces/common";
 import {
   CreateReview,
   GetReviewsByRatingParams,
-  GetReviewsParams,
   Review,
   Reviews,
   ReviewsByRating,
@@ -22,7 +22,7 @@ export const deleteReviewById = async (id: string): Promise<true> => {
   return await backend.delete(`/api/reviews/${id}`);
 };
 
-export const getReviews = async ({ page, pageSize }: GetReviewsParams = {}): Promise<Reviews> => {
+export const getReviews = async ({ page, pageSize }: PaginationUrlParams = {}): Promise<Reviews> => {
   return await backend.get("/api/reviews", {
     params: {
       ...(page !== undefined && { page }),

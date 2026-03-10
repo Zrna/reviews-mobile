@@ -1,3 +1,5 @@
+import { Pagination, PaginationUrlParams } from "./common";
+
 export interface Review {
   id: number;
   userId: number;
@@ -14,19 +16,8 @@ export interface Review {
   updatedAt: string;
 }
 
-export interface GetReviewsParams {
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Reviews {
+export interface Reviews extends Pagination {
   data: Review[];
-  totalRecords: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
 }
 
 export interface CreateReview {
@@ -50,19 +41,11 @@ export type ReviewsGroupedByRatings = {
   totalRecords: number;
 }[];
 
-export interface GetReviewsByRatingParams {
+export interface GetReviewsByRatingParams extends PaginationUrlParams {
   rating: number;
-  page?: number;
-  pageSize?: number;
 }
 
-export interface ReviewsByRating {
+export interface ReviewsByRating extends Pagination {
   rating: number;
   data: Review[];
-  totalRecords: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
 }
