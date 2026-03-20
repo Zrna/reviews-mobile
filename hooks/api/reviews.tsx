@@ -49,8 +49,8 @@ export const useCreateReview = () => {
       return await createReview(data);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] });
-      await queryClient.invalidateQueries({ queryKey: ["reviewsByRating"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviewsGroupedByRatings"] }); // Invalidate only the group with the same rating as the new review
+      await queryClient.invalidateQueries({ queryKey: ["reviewsByRating"] }); // Invalidate only the group with the same rating as the new review
       await queryClient.invalidateQueries({ queryKey: ["latestReviews"] });
       Toast.success("Review created");
     },
