@@ -211,7 +211,7 @@ const ReviewScreen = () => {
         <View className={`${isAndroid ? "pt-2" : ""} px-3 space-y-1 pb-[100px]`}>
           {isEditMode ? (
             <CustomInput
-              label="Your Review"
+              label="Your thoughts"
               className="mt-2"
               control={control}
               name="review"
@@ -219,7 +219,7 @@ const ReviewScreen = () => {
             />
           ) : (
             <>
-              <Text className="text-dimmed">Your Review</Text>
+              <Text className="text-dimmed">Your thoughts</Text>
               <Text className="text-white text-xl">{review.review}</Text>
             </>
           )}

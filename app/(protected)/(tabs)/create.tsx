@@ -78,7 +78,7 @@ const Create = () => {
               <CustomInput control={control} name="url" label="Link to watch or platform name" />
               <Rating control={control} />
               <WatchAgain control={control} />
-              <CustomInput control={control} name="review" label="Your Review" componentType="textarea" />
+              <CustomInput control={control} name="review" label="Your thoughts" componentType="textarea" />
               <CustomButton
                 onPress={handleSubmit(handleCreate)}
                 isFullWidth
