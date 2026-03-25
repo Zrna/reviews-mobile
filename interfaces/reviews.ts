@@ -3,13 +3,13 @@ import { Pagination, PaginationUrlParams } from "./common";
 export interface Review {
   id: number;
   userId: number;
-  imageId: string | null;
+  mediaId: string | null;
   name: string;
   rating: number | null;
   review: string;
   url: string | null;
   watchAgain: boolean;
-  image: null | {
+  media: null | {
     img: string;
   };
   createdAt: string;

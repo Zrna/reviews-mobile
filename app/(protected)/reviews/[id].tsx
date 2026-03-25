@@ -80,7 +80,7 @@ const ReviewScreen = () => {
     );
   }
 
-  const imageSource = review.image?.img ? { uri: review.image.img } : defaultPoster;
+  const imageSource = review.media?.img ? { uri: review.media.img } : defaultPoster;
   const reviewUrlDomain = review.url && getUrlDomain(review.url);
 
   const handleSave = async (data: UpdateReview) => {
