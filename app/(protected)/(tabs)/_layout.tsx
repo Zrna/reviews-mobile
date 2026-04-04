@@ -1,9 +1,13 @@
-import { Tabs } from "expo-router";
-import React from "react";
+import { router, Tabs } from "expo-router";
+import React, { useRef } from "react";
 import { Text, View } from "react-native";
-import { Home, PlusSquare, Search } from "react-native-feather";
+import { Home, Plus, Search } from "react-native-feather";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { BackButton } from "@/components";
+import { BottomSheetControls } from "@/components/BottomSheet";
+import { CreateReviewBottomSheet } from "@/components/screens/create/CreateReviewBottomSheet";
+import { BOTTOM_NAVBAR_HEIGHT } from "@/constants";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAccount } from "@/hooks/api/account";
 import { getUserInitials } from "@/utils/user";
@@ -26,97 +30,130 @@ const TabIcon: React.FC<TabIconProps> = ({ color, IconComponent, focused }) => {
 const ProtectedLayout = () => {
   const { authState } = useAuthContext();
   const { data: account } = useAccount({ enabled: authState.isLoggedIn });
+  const bottomSheetRef = useRef<BottomSheetControls>(null);
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveBackgroundColor: "#0E0E0E",
-        tabBarInactiveBackgroundColor: "#0E0E0E",
-        tabBarInactiveTintColor: "#d9d9d9",
-        tabBarActiveTintColor: "white",
-        tabBarShowLabel: true,
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: "500",
-          marginBottom: 0,
-          marginTop: 2,
-        },
-        tabBarStyle: {
-          backgroundColor: "#0E0E0E",
-          borderTopWidth: 0.2,
-          borderTopColor: "#A1A1A1",
-          height: 65,
-          paddingBottom: 4,
-          paddingTop: 4,
-        },
-        tabBarItemStyle: {
-          paddingVertical: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        tabBarHideOnKeyboard: true,
-      }}
-    >
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => <TabIcon color={color} focused={focused} IconComponent={Home} />,
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: "Search",
-          headerShown: true,
-          headerTitle: "",
-          headerStyle: {
-            backgroundColor: "black",
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tabs
+        screenListeners={({ route }) => ({
+          tabPress: () => {
+            if (route.name !== "create") {
+              bottomSheetRef.current?.close();
+            }
           },
-          headerLeft: () => <BackButton />,
-          tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={Search} />,
-        }}
-      />
-      <Tabs.Screen
-        name="create"
-        options={{
-          title: "Create",
+        })}
+        screenOptions={{
           headerShown: false,
-          tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={PlusSquare} />,
+          tabBarActiveBackgroundColor: "#0E0E0E",
+          tabBarInactiveBackgroundColor: "#0E0E0E",
+          tabBarInactiveTintColor: "#d9d9d9",
+          tabBarActiveTintColor: "white",
+          tabBarShowLabel: true,
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontWeight: "500",
+            marginBottom: 0,
+            marginTop: 2,
+          },
+          tabBarStyle: {
+            backgroundColor: "#0E0E0E",
+            borderTopWidth: 0.2,
+            borderTopColor: "#A1A1A1",
+            height: BOTTOM_NAVBAR_HEIGHT,
+            paddingBottom: 4,
+            paddingTop: 4,
+          },
+          tabBarItemStyle: {
+            paddingVertical: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          tabBarHideOnKeyboard: true,
         }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 14,
-                backgroundColor: focused ? "#00C774" : "#333",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => <TabIcon color={color} focused={focused} IconComponent={Home} />,
+          }}
+        />
+        <Tabs.Screen
+          name="search"
+          options={{
+            title: "Search",
+            headerShown: true,
+            headerTitle: "",
+            headerStyle: {
+              backgroundColor: "black",
+            },
+            headerLeft: () => <BackButton />,
+            tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={Search} />,
+          }}
+        />
+        <Tabs.Screen
+          name="create"
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+              if (bottomSheetRef.current?.isOpen()) {
+                bottomSheetRef.current.close();
+              } else {
+                bottomSheetRef.current?.open();
+              }
+            },
+          }}
+          options={{
+            title: "Create",
+            headerShown: false,
+            tabBarIcon: ({ focused, color }) => <TabIcon color={color} focused={focused} IconComponent={Plus} />,
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <View
                 style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: 12,
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  backgroundColor: focused ? "#00C774" : "#333",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                {account ? getUserInitials(account.firstName, account.lastName) : ""}
-              </Text>
-            </View>
-          ),
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: 12,
+                  }}
+                >
+                  {account ? getUserInitials(account.firstName, account.lastName) : ""}
+                </Text>
+              </View>
+            ),
+          }}
+        />
+      </Tabs>
+      <CreateReviewBottomSheet
+        onReady={(controls) => {
+          bottomSheetRef.current = controls;
+        }}
+        onSelect={(mediaType) => {
+          router.push({
+            pathname: "/create",
+            params: {
+              mediaType,
+            },
+          });
         }}
       />
-    </Tabs>
+    </GestureHandlerRootView>
   );
 };
 

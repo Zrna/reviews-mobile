@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { CustomButton, CustomInput, Rating, WatchAgain } from "@/components";
 import { useCreateReview } from "@/hooks/api/reviews";
-import { CreateReview } from "@/interfaces/reviews";
+import { CreateReview, MediaType } from "@/interfaces/reviews";
 
 const CreateSchema = z.object({
   name: z.string().min(1, "Name must contain at least 1 character"),
@@ -16,26 +16,29 @@ const CreateSchema = z.object({
   rating: z.number().int().min(1, "Rating must be at least 1").max(5, "Rating must be at most 5").optional(),
   watchAgain: z.boolean().optional(),
   review: z.string().min(1, "Review must contain at least 1 character"),
+  mediaType: z.enum(["movie", "tv", "podcast", "youtube", "other"]), // MediaType
 });
 
 const Create = () => {
-  const { name } = useLocalSearchParams(); // the name param is from the search screen input
+  const { name, mediaType } = useLocalSearchParams<{
+    name?: string;
+    mediaType: MediaType;
+  }>(); // name is from search screen, mediaType from CreateSheet
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
     reset,
-    setValue,
-  } = useForm<CreateReview>({ resolver: zodResolver(CreateSchema) });
+  } = useForm<CreateReview>({
+    resolver: zodResolver(CreateSchema),
+    defaultValues: {
+      ...(name && { name }),
+      ...(mediaType && { mediaType }),
+    } as CreateReview,
+  });
 
   const { mutateAsync: createReview } = useCreateReview();
-
-  useEffect(() => {
-    if (name) {
-      setValue("name", name as string);
-    }
-  }, [name, setValue]);
 
   const handleCreate = async (data: CreateReview) => {
     Keyboard.dismiss();
@@ -80,7 +83,9 @@ const Create = () => {
               <WatchAgain control={control} />
               <CustomInput control={control} name="review" label="Your thoughts" componentType="textarea" />
               <CustomButton
-                onPress={handleSubmit(handleCreate)}
+                onPress={handleSubmit(handleCreate, (errors) => {
+                  console.error("Validation errors:", errors);
+                })}
                 isFullWidth
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}

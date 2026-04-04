@@ -20,12 +20,15 @@ export interface Reviews extends Pagination {
   data: Review[];
 }
 
+export type MediaType = "movie" | "tv" | "podcast" | "youtube" | "other";
+
 export interface CreateReview {
   name: string;
   review: string;
   rating?: number | null;
   url?: string | null;
   watchAgain: boolean;
+  mediaType: MediaType;
 }
 
 export interface UpdateReview {
