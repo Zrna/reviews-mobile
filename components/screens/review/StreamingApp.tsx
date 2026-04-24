@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Image, Platform, Text } from "react-native";
+import { Image, Text } from "react-native";
 
 import { streamingAppsMap } from "@/utils/platforms";
 import { addUrlProtocol } from "@/utils/url";
@@ -18,14 +18,9 @@ const StreamingApp: React.FC<StreamingAppProps> = ({ name, link, showName = fals
   const app = streamingAppsMap[name];
 
   if (app) {
-    const isIOS = Platform.OS === "ios";
-
     return (
-      <Link
-        href={(link ? addUrlProtocol(link) : app.link) as any}
-        className={`h-[70px] ${isIOS ? "mt-[15%]" : ""} text-center`}
-      >
-        <Image source={app.img} className="w-[100px] h-12" resizeMode="contain" />
+      <Link href={(link ? addUrlProtocol(link) : app.link) as any} className={`h-[70px] mt-2  text-center`}>
+        <Image source={app.img} className="w-[100px] h-9" resizeMode="contain" />
       </Link>
     );
   }
