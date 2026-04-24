@@ -15,10 +15,17 @@ export interface BottomSheetProps {
   title?: string;
   children?: React.ReactNode;
   enableDynamicSizing?: boolean;
+  includeNavbarHeight?: boolean;
   onReady: (controls: BottomSheetControls) => void;
 }
 
-export const BottomSheet = ({ title, onReady, children, enableDynamicSizing }: BottomSheetProps) => {
+export const BottomSheet = ({
+  title,
+  onReady,
+  children,
+  enableDynamicSizing,
+  includeNavbarHeight = false,
+}: BottomSheetProps) => {
   const bottomSheetRef = useRef<BottomSheetInitial>(null);
   const isOpenRef = useRef(false);
   const snapPoints = useMemo(() => ["40%"], []);
@@ -31,7 +38,11 @@ export const BottomSheet = ({ title, onReady, children, enableDynamicSizing }: B
   );
 
   return (
-    <View className="absolute top-0 left-0 right-0" style={{ bottom: BOTTOM_NAVBAR_HEIGHT }} pointerEvents="box-none">
+    <View
+      className="absolute top-0 left-0 right-0"
+      style={{ bottom: includeNavbarHeight ? BOTTOM_NAVBAR_HEIGHT : 0 }}
+      pointerEvents="box-none"
+    >
       <BottomSheetInitial
         ref={(sheet) => {
           bottomSheetRef.current = sheet;
@@ -54,7 +65,10 @@ export const BottomSheet = ({ title, onReady, children, enableDynamicSizing }: B
         backgroundStyle={{ backgroundColor: "#121212" }}
         handleIndicatorStyle={{ backgroundColor: "#666" }}
       >
-        <BottomSheetView className="flex-1 items-center" style={{ padding: 16 }}>
+        <BottomSheetView
+          className="flex-1 items-center"
+          style={{ padding: 16, paddingBottom: includeNavbarHeight ? 16 : 56 }}
+        >
           {title && <Text className="text-dimmed text-base font-medium mb-6">{title}</Text>}
           {children}
         </BottomSheetView>

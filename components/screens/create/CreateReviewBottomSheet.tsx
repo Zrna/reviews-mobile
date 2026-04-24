@@ -34,6 +34,7 @@ export const CreateReviewBottomSheet = ({ onReady, onSelect }: CreateReviewBotto
       }}
       enableDynamicSizing
       title="What type of media do you want to review?"
+      // includeNavbarHeight
     >
       <View className="flex-col flex-wrap gap-2">
         {MEDIA_OPTIONS.map((option) => {
