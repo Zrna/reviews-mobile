@@ -1,5 +1,18 @@
 import { Pagination, PaginationUrlParams } from "./common";
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface Media {
+  img: string;
+  type: string;
+  overview: string | null;
+  releaseDate: string | null;
+  genres: Genre[];
+}
+
 export interface Review {
   id: number;
   userId: number;
@@ -9,9 +22,7 @@ export interface Review {
   review: string;
   url: string | null;
   watchAgain: boolean;
-  media: null | {
-    img: string;
-  };
+  media: null | Media;
   createdAt: string;
   updatedAt: string;
 }
