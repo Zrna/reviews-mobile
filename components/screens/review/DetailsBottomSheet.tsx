@@ -22,7 +22,7 @@ interface BoxProps {
 
 const Box = ({ name, value }: BoxProps) => {
   return (
-    <View className="flex-1 space-y-1 p-2 rounded-xl bg-stone-800">
+    <View className="flex-1 gap-1 p-2 rounded-xl bg-stone-800">
       <Text className={styles.name}>{name}</Text>
       <Text className={styles.value}>{value}</Text>
     </View>
@@ -52,20 +52,20 @@ export const DetailsBottomSheet = ({ onReady, review }: DetailsBottomSheetProps)
       title="Details"
     >
       <View className="flex-col gap-4">
-        <View className="flex-row" style={{ gap: 8 }}>
+        <View className="flex-row gap-2">
           {type && <Box name="Type" value={type} />}
           {media?.releaseDate && <Box name="Release Date" value={formatDate(media.releaseDate)} />}
         </View>
         {media?.overview && (
-          <View className="space-y-2">
+          <View className="gap-2">
             <Text className={styles.name}>Overview</Text>
             <Text className={clsx(styles.value, "normal-case")}>{media.overview}</Text>
           </View>
         )}
-        <View className="space-y-2">
+        <View className="gap-2">
           <Text className={styles.name}>Where to watch</Text>
           <Link href={(url ? addUrlProtocol(url) : "") as any}>
-            <View className="flex-row border p-2 border-stone-800 rounded-xl items-center" style={{ gap: 8 }}>
+            <View className="flex-row border p-2 border-stone-800 rounded-xl items-center gap-2">
               {app?.img && <Image source={app.img} resizeMode="contain" className="w-6 h-6" />}
               <Text className={clsx(styles.value, "flex-1 normal-case")} numberOfLines={1} ellipsizeMode="tail">
                 {url ?? "Not provided"}
@@ -74,7 +74,7 @@ export const DetailsBottomSheet = ({ onReady, review }: DetailsBottomSheetProps)
             </View>
           </Link>
         </View>
-        <View className="flex-row" style={{ gap: 8 }}>
+        <View className="flex-row gap-2">
           <Box name="Watch again" value={watchAgain ? "Yes" : "No"} />
           <Box name="Review added" value={formatDate(createdAt)} />
         </View>

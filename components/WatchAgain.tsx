@@ -11,9 +11,9 @@ const WatchAgain: React.FC<WatchAgainProps> = ({ control }) => {
       control={control}
       name="watchAgain"
       render={({ field: { value, onChange } }) => (
-        <View className="space-y-1 mb-4">
+        <View className="gap-1 mb-4">
           <Text className="text-dimmed font-pop-medium">Watch again or recommend?</Text>
-          <View className="flex-row space-x-4">
+          <View className="flex-row gap-4">
             <Text
               onPress={() => (onChange(true), Keyboard.dismiss())}
               className={`text-lg ${value === true ? "text-primary" : "text-dimmed opacity-50"}`}

@@ -1,3 +1,6 @@
+import "../global.css";
+import "../nativewind.setup";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";

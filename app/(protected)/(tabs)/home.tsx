@@ -63,7 +63,8 @@ const Home = () => {
       >
         <ScrollView
           ref={scrollViewRef}
-          className="px-3 space-y-10"
+          className="px-2"
+          contentContainerClassName="gap-10"
           stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
           refreshControl={
             <RefreshControl
@@ -76,7 +77,7 @@ const Home = () => {
         >
           <Navbar />
           {!latestReviews?.data.length && reviews?.every((group) => group.data.length === 0) ? (
-            <View className="space-y-5 h-[80vh] justify-center">
+            <View className="gap-5 h-[80vh] justify-center">
               <Image className="w-auto h-auto self-center" source={cowImg} />
               <CustomButton text="Create a review" onPress={() => bottomSheetRef.current?.open()} class="mt-10" />
             </View>
@@ -101,7 +102,7 @@ const Home = () => {
                   ListFooterComponent={
                     <TouchableOpacity
                       activeOpacity={0.7}
-                      className="w-[200px] h-[300px] flex-row space-x-1 p-6 justify-center items-center ml-2"
+                      className="w-[200px] h-[300px] flex-row justify-center items-center ml-2"
                       onPress={() => bottomSheetRef.current?.open()}
                       style={{ borderWidth: 3, borderStyle: "dashed", borderColor: "#23C06B", borderRadius: 6 }}
                       accessibilityLabel="Create new review"

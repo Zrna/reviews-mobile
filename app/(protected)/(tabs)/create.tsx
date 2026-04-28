@@ -74,8 +74,8 @@ const Create = () => {
             paddingBottom: Platform.select({ ios: 16, android: 12 }),
           }}
         >
-          <View className="w-full p-4 pt-8 space-y-8 pb-2">
-            <Text className="text-white font-pop-bold text-xl pb-1">Create a review</Text>
+          <View className="w-full p-4 pt-8 gap-8 pb-2">
+            <Text className="text-white font-pop-bold text-2xl">Create a review</Text>
             <View>
               <CustomInput control={control} name="name" label="Movie/TV show name" />
               <CustomInput control={control} name="url" label="Link to watch or platform name" />

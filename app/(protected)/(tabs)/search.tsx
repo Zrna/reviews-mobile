@@ -62,13 +62,12 @@ const Search = () => {
               isFetchingNextPage ? <ActivityIndicator color="white" className="py-4" /> : <View className="h-10" />
             }
             ListEmptyComponent={
-              <View className="space-y-5">
+              <View className="gap-5">
                 <Text className="text-dimmed self-center">No Reviews Found</Text>
                 <Image className="w-auto h-auto self-center" source={cowImg} />
                 <CustomButton
                   text={search ? `Add review for ${search}` : "Create a review"}
                   onPress={() => bottomSheetRef.current?.open()}
-                  class="mt-10"
                 />
               </View>
             }

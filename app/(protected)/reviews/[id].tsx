@@ -9,7 +9,6 @@ import {
   Alert,
   Animated,
   ImageBackground,
-  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -117,8 +116,6 @@ const ReviewScreen = () => {
     extrapolate: "clamp",
   });
 
-  const isAndroid = Platform.OS === "android";
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Animated.View className="flex flex-1">
@@ -150,8 +147,8 @@ const ReviewScreen = () => {
               colors={["transparent", "rgba(0,0,0,0.1)", "rgba(0,0,0,0.1)", "rgba(0,0,0,1)"]}
             />
           </ImageBackground>
-          <View className="p-3 pt-0 space-y-4">
-            <View className="mb-2">
+          <View className="p-3 pt-0 gap-4">
+            <View className="gap-2">
               <Text
                 className="text-white text-4xl font-pop-semibold self-center"
                 onPress={() => isEditMode && Toast.warn("Name can't be changed")}
@@ -163,7 +160,7 @@ const ReviewScreen = () => {
                   <Rating control={control} hideLabel />
                 </View>
               ) : (
-                <View className="flex-row w-full justify-center items-center space-x-2">
+                <View className="flex-row w-full justify-center items-center gap-2">
                   <Indicator rating={review.rating} />
                   <Text className="text-dimmed text-sm font-pop-semibold self-center">
                     {review.rating?.toFixed(1) ?? "Not"} Rated
@@ -171,9 +168,9 @@ const ReviewScreen = () => {
                 </View>
               )}
             </View>
-            <View className="flex-row justify-between space-x-2">
+            <View className="flex-row justify-between gap-2">
               <View
-                className={`${isEditMode ? "w-1/2" : "w-1/3 items-center"} h-[${review.url || isEditMode ? "100px" : "50px"}] space-y-2`}
+                className={`${isEditMode ? "w-1/2" : "w-1/3 items-center"} h-[${review.url || isEditMode ? "100px" : "50px"}] gap-2`}
               >
                 <Text className="text-dimmed">{isEditMode ? "Link to watch" : "Watch it here"}</Text>
                 {isEditMode ? (
@@ -194,20 +191,20 @@ const ReviewScreen = () => {
                 )}
               </View>
               <View
-                className={`${isEditMode ? "w-1/2" : "w-1/3"} h-[${review.url ? "100px" : "50px"}] space-y-2 items-center`}
+                className={`${isEditMode ? "w-1/2" : "w-1/3"} h-[${review.url ? "100px" : "50px"}] gap-2 items-center`}
               >
                 {isEditMode ? (
                   <WatchAgain control={control} />
                 ) : (
                   <>
                     <Text className="text-dimmed">Recommend?</Text>
-                    <Text className="text-white">{review.watchAgain ? "Yes, for sure!" : "Not really..."}</Text>
+                    <Text className="text-white">{review.watchAgain ? "Yes" : "No"}</Text>
                   </>
                 )}
               </View>
               {!isEditMode && (
                 <Pressable
-                  className={`w-1/3 h-[${review.url ? "100px" : "50px"}] space-y-2 items-center`}
+                  className={`w-1/3 h-[${review.url ? "100px" : "50px"}] gap-2 items-center`}
                   onPress={() => bottomSheetRef.current?.open()}
                 >
                   <Text className="text-dimmed">Details</Text>
@@ -216,7 +213,7 @@ const ReviewScreen = () => {
               )}
             </View>
           </View>
-          <View className={`${isAndroid ? "pt-2" : ""} px-3 space-y-1 pb-[100px]`}>
+          <View className="px-4 gap-2 pb-[100px]">
             {isEditMode ? (
               <CustomInput
                 label="Your thoughts"
@@ -231,7 +228,7 @@ const ReviewScreen = () => {
                 <Text className="text-white text-xl">{review.review}</Text>
               </>
             )}
-            <Text className="text-dimmed text-xs italic pt-6">Added on {formatDate(review.createdAt)}</Text>
+            <Text className="text-dimmed text-xs italic pt-4">Added on {formatDate(review.createdAt)}</Text>
           </View>
         </ScrollView>
         {(isDeleting || isUpdating || isSubmittingUpdate) && (

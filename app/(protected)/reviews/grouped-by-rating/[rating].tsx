@@ -65,7 +65,7 @@ const ReviewGroupedByRatingScreen = () => {
               isFetchingNextPage ? <ActivityIndicator color="white" className="py-4" /> : <View className="h-10" />
             }
             ListEmptyComponent={
-              <View className="space-y-5 h-[80vh] justify-center">
+              <View className="gap-5 h-[80vh] justify-center">
                 <Image className="w-auto h-auto self-center" source={cowImg} />
                 <CustomButton text="Create a review" onPress={() => bottomSheetRef.current?.open()} class="mt-10" />
               </View>

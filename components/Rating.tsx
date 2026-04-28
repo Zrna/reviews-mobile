@@ -14,17 +14,17 @@ const Rating: React.FC<RatingProps> = ({ hideLabel, control, isReadOnly = false 
       control={control}
       name="rating"
       render={({ field: { value, onChange } }) => (
-        <View className="space-y-2 mb-4">
+        <View className="gap-2 mb-4">
           {hideLabel ? null : <Text className="text-dimmed font-pop-medium">Rating</Text>}
-          <View className="flex-row marker:items-center space-x-5">
-            <View className="flex-row space-x-1.5">
+          <View className="flex-row items-center">
+            <View className="flex-row px-2 gap-1.5">
               {Array.from(Array(5)).map((_, i) => {
                 const elementValue = i + 1;
                 const isActive = value ? elementValue <= value : false;
 
                 return (
                   <TouchableOpacity
-                    className={`flex items-center justify-center w-7 h-7 rounded-full border ${isActive ? "border-primary" : "border-white opacity-20"} cursor-pointer`}
+                    className={`flex items-center justify-center size-8 rounded-full border ${isActive ? "border-primary" : "border-white opacity-20"} cursor-pointer`}
                     key={`rating-${i}`}
                     onPress={() => {
                       if (!isReadOnly) {
@@ -33,7 +33,7 @@ const Rating: React.FC<RatingProps> = ({ hideLabel, control, isReadOnly = false 
                       Keyboard.dismiss();
                     }}
                   >
-                    <View className={`w-2 h-2 rounded-full ${isActive ? "bg-primary" : "bg-white"}`} />
+                    <View className={`size-2 rounded-full ${isActive ? "bg-primary" : "bg-white"}`} />
                   </TouchableOpacity>
                 );
               })}

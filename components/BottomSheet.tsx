@@ -1,5 +1,6 @@
 import BottomSheetInitial, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
 import type { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
+import clsx from "clsx";
 import React, { useCallback, useMemo, useRef } from "react";
 import { Text, View } from "react-native";
 
@@ -65,10 +66,7 @@ export const BottomSheet = ({
         backgroundStyle={{ backgroundColor: "#121212" }}
         handleIndicatorStyle={{ backgroundColor: "#666" }}
       >
-        <BottomSheetView
-          className="flex-1 items-center"
-          style={{ padding: 16, paddingBottom: includeNavbarHeight ? 16 : 56 }}
-        >
+        <BottomSheetView className={clsx("flex-1 p-4", includeNavbarHeight ? "pb-4" : "pb-14")}>
           {title && <Text className="text-dimmed text-base font-medium mb-6">{title}</Text>}
           {children}
         </BottomSheetView>

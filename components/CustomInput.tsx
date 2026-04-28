@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
@@ -25,6 +26,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   secureTextEntry = false,
   Icon,
   onClear,
+  className,
   ...props
 }) => {
   const [isValueHidden, setShowIsValueHidden] = useState(secureTextEntry);
@@ -37,8 +39,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
       rules={rules}
       render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => {
         return (
-          <View className={`w-full space-y-1 mb-4 ${containerClassName}`}>
-            <View className="space-y-1">
+          <View className={`w-full gap-2 mb-4 ${containerClassName}`}>
+            <View className="gap-2">
               {label && <Text className="text-dimmed font-pop-medium">{label}</Text>}
               <View
                 className={`flex-row justify-between bg-dark text-white items-center px-3 rounded-xl ${isTextArea ? "h-[200px]" : "h-16"} border border-light-dark focus:border-primary ${error ? "border border-red-500" : ""}`}
@@ -50,7 +52,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                   onBlur={onBlur}
                   secureTextEntry={secureTextEntry && isValueHidden}
                   placeholderTextColor="#b3b3b3"
-                  className={`text-white flex-1 text-base h-full ${Icon ? "ml-2" : ""}`}
+                  className={clsx("text-white flex-1 text-base h-full", Icon && "ml-2", className)}
                   hitSlop={{ top: 20, bottom: 20 }}
                   multiline={isTextArea}
                   numberOfLines={isTextArea ? 9 : 1}

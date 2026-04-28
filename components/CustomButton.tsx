@@ -52,7 +52,7 @@ const CustomButton = ({
       {isLoading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <View className="flex-row space-x-1.5 items-center">
+        <View className="flex-row gap-1 items-center">
           {icon && icon}
           {text && (
             <Text className={`${variantsMap[variant].text} font-pop-semibold text-lg ${textClass}`}>{text}</Text>

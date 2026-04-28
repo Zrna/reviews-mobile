@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor, isEditMode, onEdit, onSave, on
             <IconWrapper onPress={onDelete}>
               <Trash2 stroke="red" width={26} height={26} />
             </IconWrapper>
-            <View className="flex-row">
+            <View className="flex-row gap-3">
               <IconWrapper onPress={onCancel}>
                 <X stroke="rgba(255,255,255,0.8)" width={28} height={28} />
               </IconWrapper>
@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor, isEditMode, onEdit, onSave, on
               height={38}
               onPress={() => navigation.goBack()}
             />
-            <View className="flex-row space-x-3">
+            <View className="flex-row gap-3">
               <IconWrapper onPress={() => router.push("/search")}>
                 <Search stroke="rgba(255,255,255,0.7)" width={24} height={24} />
               </IconWrapper>

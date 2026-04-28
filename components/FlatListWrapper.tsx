@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -17,18 +18,21 @@ const FlatListWrapper: React.FC<FlatListWrapperProps> = ({
   onPress,
 }) => {
   return (
-    <View className={`space-y-2 ${customClass}`}>
+    <View className={clsx("gap-2", customClass)}>
       <TouchableOpacity
         className="flex flex-row items-center justify-between"
         onPress={onPress}
         activeOpacity={onPress ? 0.5 : 1}
       >
         <Text
-          className={`text-white ${isBigTitle ? "text-2xl tracking-[0.5px] font-pop-bold" : "text-lg font-pop-semibold"}`}
+          className={clsx(
+            "text-white",
+            isBigTitle ? "text-2xl tracking-[0.5px] font-pop-bold" : "text-xl font-pop-semibold",
+          )}
         >
           {title}
         </Text>
-        {onPress && <Text className="text-primary font-pop-light text-sm">See all</Text>}
+        {onPress && <Text className="text-primary font-pop-light">See all</Text>}
       </TouchableOpacity>
       {children}
     </View>

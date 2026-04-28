@@ -58,7 +58,7 @@ const Profile = () => {
       <View className="pt-4 px-3 items-end">
         <LogOut stroke="rgba(255,255,255,0.8)" width={28} height={28} onPress={onLogout} />
       </View>
-      <View className="h-full justify-center items-center space-y-6">
+      <View className="h-full justify-center items-center gap-6">
         <View className="bg-green-default rounded-lg p-0.5">
           <View className="w-16 h-16 border-2 border-black rounded-lg justify-center items-center bg-black">
             <Text className="text-2xl text-white">{userInitials}</Text>
@@ -90,7 +90,7 @@ const Profile = () => {
             </View>
           </View>
         ) : (
-          <View className="flex-row space-x-2 items-center">
+          <View className="flex-row gap-2 items-center">
             <Text className="text-white text-xl">
               {firstName} {lastName}
             </Text>
