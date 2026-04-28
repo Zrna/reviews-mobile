@@ -18,13 +18,14 @@ export interface Review {
   userId: number;
   mediaId: string | null;
   name: string;
+  type: MediaType | null;
   rating: number | null;
   review: string;
   url: string | null;
   watchAgain: boolean;
-  media: null | Media;
   createdAt: string;
   updatedAt: string;
+  media: null | Media;
 }
 
 export interface Reviews extends Pagination {
