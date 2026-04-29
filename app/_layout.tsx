@@ -7,6 +7,8 @@ import { SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import React, { useEffect } from "react";
+import { Text, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import ToastManager from "toastify-react-native";
 
 import AuthProvider from "@/contexts/AuthContext";
@@ -27,6 +29,47 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const TOAST_ICONS: Record<string, string> = {
+  success: "checkmark-circle",
+  error: "alert-circle",
+  info: "information-circle",
+  warn: "warning",
+  default: "checkmark-circle",
+};
+
+const TOAST_COLORS: Record<string, string> = {
+  success: "#23C06B",
+  error: "#C02323",
+  info: "#3498db",
+  warn: "#C09423",
+  default: "#3498db",
+};
+
+// `text1` needs to be named as such to work with the ToastManager's default configuration, which expects a `text1` property for the main message.
+const renderToast = ({ type = "default", text1 }: { type?: string; text1?: string }) => (
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "#202020",
+      borderRadius: 15,
+      minHeight: 45,
+      paddingHorizontal: 16,
+    }}
+  >
+    <Ionicons name={TOAST_ICONS[type]} size={22} color={TOAST_COLORS[type]} style={{ marginRight: 8 }} />
+    <Text style={{ color: "#fff", fontFamily: "Poppins-Regular", fontSize: 14 }}>{text1}</Text>
+  </View>
+);
+
+const toastConfig = {
+  success: renderToast,
+  error: renderToast,
+  info: renderToast,
+  warn: renderToast,
+  default: renderToast,
+};
 
 const RootLayout = () => {
   const [fontsLoaded, fontsError] = useFonts({
@@ -60,20 +103,7 @@ const RootLayout = () => {
       <AuthProvider>
         <AuthNavigator />
         <StatusBar backgroundColor="#000" style="light" />
-        <ToastManager
-          animationInTiming={600}
-          animationOutTiming={600}
-          animationIn="fadeInDown"
-          animationOut="fadeOutUp"
-          duration={2000}
-          width="auto"
-          height={45} // TODO: update the toastify-react-native package to support the `auto` value
-          showCloseIcon={false}
-          showProgressBar={false}
-          theme="light"
-          style={{ backgroundColor: "#202020", borderRadius: 50 }}
-          textStyle={{ color: "#fff", fontFamily: "Poppins-Regular", fontSize: 14 }}
-        />
+        <ToastManager duration={2500} config={toastConfig} />
       </AuthProvider>
     </QueryClientProvider>
   );
