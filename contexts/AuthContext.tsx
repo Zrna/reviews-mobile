@@ -134,7 +134,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState({ accessToken: undefined, isLoggedIn: false });
 
       // Dismiss all modals and clear navigation stack, then navigate to login
-      router.dismissAll();
+      if (router.canDismiss()) {
+        router.dismissAll();
+      }
       router.replace("/");
 
       // Reset the flag after a delay to allow navigation to complete
