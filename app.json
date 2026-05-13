@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Reviews",
-    "slug": "reviews",
+    "name": "Moovier",
+    "slug": "moovier",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "reviews",
+    "scheme": "moovier",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,12 +14,14 @@
       "backgroundColor": "#000000"
     },
     "ios": {
+      "bundleIdentifier": "com.moovier.app",
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
       }
     },
     "android": {
+      "package": "com.moovier.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
@@ -34,10 +36,23 @@
       "expo-router",
       "expo-secure-store",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.609993941924-j16nt5icmjbsm7stjjq88ukha74ce11q"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8cee474f-5224-4008-9473-b4a7c0854a79"
+      }
+    },
+    "owner": "zrna"
   }
 }

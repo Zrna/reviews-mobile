@@ -1,5 +1,6 @@
 import "../global.css";
 import "../nativewind.setup";
+import "@/services/googleAuth";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";

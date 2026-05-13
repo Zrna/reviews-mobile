@@ -19,7 +19,7 @@ export const RegisterFormSchema = z.object({
 });
 
 const Register = () => {
-  const { onRegister } = useAuthContext();
+  const { onRegister, onGoogleLogin } = useAuthContext();
 
   const {
     control,
@@ -73,8 +73,19 @@ const Register = () => {
               isLoading={isSubmitting}
               class="mt-4"
             />
+            <View className="flex-row items-center my-6">
+              <View className="flex-1 h-px bg-zinc-700" />
+              <Text className="text-dimmed mx-3 text-xs uppercase">or</Text>
+              <View className="flex-1 h-px bg-zinc-700" />
+            </View>
+            <CustomButton
+              variant="outlined-secondary"
+              text="Continue with Google"
+              isFullWidth
+              onPress={() => onGoogleLogin?.()}
+            />
             <Link href="/login" className="text-dimmed mt-6 self-center">
-              Have an account? <Text className="text-blue-400">Log in</Text>
+              Have an account? <Text className="text-blue-400">Log in with email</Text>
             </Link>
           </View>
         </View>

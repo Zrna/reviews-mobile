@@ -1,3 +1,4 @@
+import { GoogleSignin, isSuccessResponse } from "@react-native-google-signin/google-signin";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { router } from "expo-router";
@@ -5,7 +6,12 @@ import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";
 
-import { login as loginRequest, logout as logoutRequest, register as registerRequest } from "@/apis/auth";
+import {
+  googleSignIn as googleSignInRequest,
+  login as loginRequest,
+  logout as logoutRequest,
+  register as registerRequest,
+} from "@/apis/auth";
 import { LoginProps, RegisterProps } from "@/interfaces/auth";
 import { ACCESS_TOKEN, setTokenRefreshCallback } from "@/services/backend";
 import { sleep } from "@/utils/async";
@@ -18,6 +24,7 @@ interface AuthContextProps {
   };
   onLogin?: (data: LoginProps) => void;
   onRegister?: (data: RegisterProps) => void;
+  onGoogleLogin?: () => void;
   onLogout?: () => void;
 }
 
@@ -69,6 +76,34 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const googleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+
+      if (!isSuccessResponse(response)) {
+        return;
+      }
+
+      const idToken = response.data.idToken;
+
+      if (!idToken) {
+        throw new Error("No ID token returned by Google");
+      }
+
+      const res = await googleSignInRequest(idToken);
+
+      setAuthState({ accessToken: res.accessToken, isLoggedIn: true });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${res.accessToken}`;
+      await SecureStore.setItemAsync(ACCESS_TOKEN, res.accessToken);
+
+      router.replace("/home");
+      return res;
+    } catch (error) {
+      Alert.alert("", getErrorMessage(error));
+    }
+  };
+
   const logout = async () => {
     // Prevent multiple simultaneous logout calls
     if (isLoggingOut.current) {
@@ -84,6 +119,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // But we call it anyway in case backend logic changes in the future
       await logoutRequest().catch(() => {
         // Ignore errors - token might be expired, but we're logging out anyway
+      });
+      await GoogleSignin.signOut().catch(() => {
+        // Ignore errors - user may not have been signed in via Google
       });
     } catch {
       // Ignore any errors
@@ -148,6 +186,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         authState,
         onRegister: register,
         onLogin: login,
+        onGoogleLogin: googleLogin,
         onLogout: logout,
       }}
     >

@@ -8,7 +8,7 @@ import CustomButton from "@/components/CustomButton";
 import { useAuthContext } from "@/contexts/AuthContext";
 
 const App = () => {
-  const { authState } = useAuthContext();
+  const { authState, onGoogleLogin } = useAuthContext();
 
   if (authState.isLoggedIn) {
     return <Redirect href="/home" />;
@@ -28,13 +28,19 @@ const App = () => {
           </View>
           <View className="gap-4 w-full items-center">
             <CustomButton
-              variant="primary"
-              text="Continue to Login"
+              variant="outlined"
+              text="Continue with Google"
+              isFullWidth
+              onPress={() => onGoogleLogin?.()}
+            />
+            <CustomButton
+              variant="outlined"
+              text="Continue with Email"
               isFullWidth
               onPress={() => router.push("/login")}
             />
             <Link href="/register" className="text-dimmed">
-              or create an account
+              or Create an account
             </Link>
           </View>
         </View>

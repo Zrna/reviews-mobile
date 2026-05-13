@@ -9,6 +9,10 @@ export const register = async (props: RegisterProps): Promise<{ accessToken: str
   return await backend.post("/register", props);
 };
 
+export const googleSignIn = async (idToken: string): Promise<{ accessToken: string }> => {
+  return await backend.post("/auth/google", { idToken });
+};
+
 export const logout = async () => {
   return await backend.post<"Logged out successfully">("/logout");
 };
