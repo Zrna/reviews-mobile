@@ -27,12 +27,8 @@ interface LatestReviewCardProps {
 }
 
 const LatestReviewCard: React.FC<LatestReviewCardProps> = ({ activeItem, review }) => {
-  if (!activeItem) {
-    return null;
-  }
-
   return (
-    <Animatable.View animation={activeItem.id === review.id ? zoomIn : zoomOut} duration={500}>
+    <Animatable.View animation={!activeItem || activeItem.id === review.id ? zoomIn : zoomOut} duration={500}>
       <ReviewCard review={review} isBig />
     </Animatable.View>
   );
