@@ -50,18 +50,18 @@ const ProtectedLayout = () => {
           tabBarActiveTintColor: "white",
           tabBarShowLabel: true,
           tabBarLabelStyle: {
-            fontSize: 10,
+            fontSize: 8,
             fontWeight: "500",
             marginBottom: 0,
             marginTop: 2,
           },
           tabBarStyle: {
             backgroundColor: "#0E0E0E",
-            borderTopWidth: 0.2,
-            borderTopColor: "#A1A1A1",
             height: BOTTOM_NAVBAR_HEIGHT,
             paddingBottom: 4,
             paddingTop: 4,
+            borderTopWidth: 0,
+            elevation: 0,
           },
           tabBarItemStyle: {
             paddingVertical: 0,
