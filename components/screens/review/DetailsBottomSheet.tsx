@@ -53,8 +53,8 @@ export const DetailsBottomSheet = ({ onReady, review }: DetailsBottomSheetProps)
     >
       <View className="flex-col gap-4">
         <View className="flex-row gap-2">
-          {type && <Box name="Type" value={type} />}
-          {media?.releaseDate && <Box name="Release Date" value={formatDate(media.releaseDate)} />}
+          <Box name="Watch again" value={watchAgain ? "Yes" : "No"} />
+          <Box name="Review added" value={formatDate(createdAt)} />
         </View>
         {media?.overview && (
           <View className="gap-2">
@@ -75,8 +75,8 @@ export const DetailsBottomSheet = ({ onReady, review }: DetailsBottomSheetProps)
           </Link>
         </View>
         <View className="flex-row gap-2">
-          <Box name="Watch again" value={watchAgain ? "Yes" : "No"} />
-          <Box name="Review added" value={formatDate(createdAt)} />
+          {type && <Box name="Type" value={type} />}
+          {media?.releaseDate && <Box name="Release Date" value={formatDate(media.releaseDate)} />}
         </View>
       </View>
     </BottomSheet>
