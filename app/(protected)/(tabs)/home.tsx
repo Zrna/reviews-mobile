@@ -1,18 +1,15 @@
 import { router } from "expo-router";
-import React, { useRef, useState } from "react";
-import { FlatList, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View, ViewToken } from "react-native";
-import { Plus } from "react-native-feather";
+import React, { useRef } from "react";
+import { FlatList, Image, RefreshControl, ScrollView, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import cowImg from "@/assets/images/cow/cow.png";
-import cowWithCup from "@/assets/images/cow/cow-with-cup.png";
 import { CustomButton, FlatListWrapper, ReviewCard } from "@/components";
 import { BottomSheetControls } from "@/components/BottomSheet";
 import { CreateReviewBottomSheet } from "@/components/screens/create/CreateReviewBottomSheet";
-import { LatestReviewCard, Navbar, Skeleton } from "@/components/screens/home";
+import { LatestReviewsCarousel, Navbar, Skeleton } from "@/components/screens/home";
 import { useLatestReviews, useReviewsGroupedByRatings } from "@/hooks/api/reviews";
-import { Review } from "@/interfaces/reviews";
 import { getRatingTitle } from "@/utils/ratingTitles";
 
 const Home = () => {
@@ -26,19 +23,8 @@ const Home = () => {
     isLoading: isLoadingReviews,
   } = useReviewsGroupedByRatings();
 
-  const [activeLatestReviewCard, setActiveLatestReviewCard] = useState<Review | undefined>(undefined);
   const scrollViewRef = useRef<ScrollView>(null);
   const bottomSheetRef = useRef<BottomSheetControls>(null);
-
-  const viewableItemsChanged = React.useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems.length > 0 && viewableItems[0].item) {
-      const newReview = viewableItems[0].item as Review;
-      setActiveLatestReviewCard((prev) => {
-        if (prev?.id === newReview.id) return prev;
-        return newReview;
-      });
-    }
-  }, []);
 
   const handleRefresh = async () => {
     await refetchLatestReviews();
@@ -64,7 +50,7 @@ const Home = () => {
         <ScrollView
           ref={scrollViewRef}
           className="px-2"
-          contentContainerClassName="gap-10"
+          contentContainerClassName="gap-4"
           stickyHeaderIndices={[0]} // Ensure the index matches the position of the header
           refreshControl={
             <RefreshControl
@@ -83,40 +69,10 @@ const Home = () => {
             </View>
           ) : (
             <View>
-              <FlatListWrapper title="Your Latest" isBigTitle>
-                <FlatList
-                  data={latestReviews?.data}
-                  keyExtractor={(review) => review.id.toString()}
-                  renderItem={({ item }) => <LatestReviewCard activeItem={activeLatestReviewCard} review={item} />}
-                  ListEmptyComponent={() => <Text className="text-white">No Reviews</Text>}
-                  ItemSeparatorComponent={() => <View className="w-2" />}
-                  showsHorizontalScrollIndicator={false}
-                  onViewableItemsChanged={viewableItemsChanged}
-                  horizontal
-                  viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-                  contentOffset={{ x: 0, y: 0 }}
-                  initialNumToRender={3}
-                  maxToRenderPerBatch={3}
-                  windowSize={5}
-                  removeClippedSubviews={true}
-                  ListFooterComponent={
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      className="w-[200px] h-[300px] flex-row justify-center items-center ml-2"
-                      onPress={() => bottomSheetRef.current?.open()}
-                      style={{ borderWidth: 3, borderStyle: "dashed", borderColor: "#23C06B", borderRadius: 6 }}
-                      accessibilityLabel="Create new review"
-                      accessibilityHint="Tap to create a new review"
-                      accessibilityRole="button"
-                    >
-                      <Image
-                        source={cowWithCup}
-                        className="w-[150px] h-[150px] absolute bottom-[-70px] right-0 flex-1"
-                      />
-                      <Plus stroke="white" width={20} height={20} />
-                      <Text className="text-white font-pop-medium text-lg">Add new</Text>
-                    </TouchableOpacity>
-                  }
+              <FlatListWrapper title="Your Latest" isBigTitle class="h-[68vh]">
+                <LatestReviewsCarousel
+                  reviews={latestReviews?.data ?? []}
+                  onAddNew={() => bottomSheetRef.current?.open()}
                 />
               </FlatListWrapper>
               {reviews?.map(({ rating, data }) => (
